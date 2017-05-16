@@ -128,6 +128,11 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -165,13 +170,12 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Inlog\Index.cshtml" />
     <Content Include="Views\MijnBoeken\Index.cshtml" />
-    <Content Include="Views\Gebruikers\GebruikerToevoegen.cshtml" />
     <Content Include="Views\Gebruikers\GebruikerBeheren.cshtml" />
     <Content Include="Views\MijnBoeken\FindBoek.cshtml" />
     <Content Include="Views\Inlog\Authorise.cshtml" />
-    <Content Include="Views\Gebruikers\WijzigMijnGegevens.cshtml" />
     <Content Include="Views\Gebruikers\GetMijnGegevens.cshtml" />
     <Content Include="Views\Gebruikers\GebruikerResetten.cshtml" />
+    <Content Include="Views\Gebruikers\GebruikerToevoegen.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

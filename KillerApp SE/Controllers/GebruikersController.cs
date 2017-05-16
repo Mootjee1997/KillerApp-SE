@@ -21,36 +21,46 @@ namespace KillerApp_SE.Controllers
             ViewBag.Geboortedatum = gebruikerInfo.ElementAt(2);
             return View();
         }
-        public ActionResult GebruikerBeheren()
+        public ActionResult GebruikerToevoegen()
         {
-            List<string> gebruikerslijst = new List<string>();
-            gebruikerslijst = rep.GetGebruikerslijst();
-            ViewBag.Gebruikerslijst = gebruikerslijst;
-            return View();
-        }
-        public ActionResult GebruikerToevoegen(string naam, string adres, string geboortedatum, string gebruikernaam, string wachtwoord)
-        {
-            rep.GebruikerToevoegen(gebruikernaam, wachtwoord, naam, adres, geboortedatum);
-            return View();
-        }
-        public ActionResult GebruikerVerwijderen(string gebruikernaam)
-        {
-            rep.GebruikerVerwijderen(gebruikernaam);
-            return View();
-        }
-        public ActionResult GebruikerResetten(string gebruikernaam, string wachtwoord, string wachtwoordBevestig)
-        {
-            if (wachtwoord == wachtwoordBevestig)
-            {
-                rep.GebruikerResetten(gebruikernaam, wachtwoord);
-            }
             return View();
         }
         [HttpPost]
-        public ActionResult WijzigMijnGegevens(string gebruikernaam, string naam, string adres, string geboortedatum)
+        public ActionResult GebruikerToevoegen(FormCollection fc)
         {
-            rep.WijzigMijnGegevens("Admin", naam, adres, geboortedatum);
+            string gebruikernaam = fc["Naam"];
+            string wachtwoord = fc["Wachtwoord"];
+            string naam = fc["Naam"];
+            string adres = fc["Adres"];
+            string geboortedatum = fc["Geboortedatum"];
+            rep.GebruikerToevoegen(gebruikernaam, wachtwoord, naam, adres, geboortedatum);
             return View();
         }
+        //[HttpGet]
+        //public ActionResult WijzigMijnGegevens(string naam, string adres, string geboortedatum)
+        //{
+        //    rep.WijzigMijnGegevens("Admin", "naam", "adres", "geboortedatum");
+        //    return View();
+        //}
+        //public ActionResult GebruikerBeheren()
+        //{
+        //    List<string> gebruikerslijst = new List<string>();
+        //    gebruikerslijst = rep.GetGebruikerslijst();
+        //    ViewBag.Gebruikerslijst = gebruikerslijst;
+        //    return View();
+        //}
+        //public ActionResult GebruikerVerwijderen(string gebruikernaam)
+        //{
+        //    rep.GebruikerVerwijderen(gebruikernaam);
+        //    return View();
+        //}
+        //public ActionResult GebruikerResetten(string gebruikernaam, string wachtwoord, string wachtwoordBevestig)
+        //{
+        //    if (wachtwoord == wachtwoordBevestig)
+        //    {
+        //        rep.GebruikerResetten(gebruikernaam, wachtwoord);
+        //    }
+        //    return View();
+        //}
     }
 }

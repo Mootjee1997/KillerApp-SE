@@ -11,7 +11,7 @@ namespace KillerApp_SE.Models
         private int gebruikerID;
         private string gebruikernaam;
         private string wachtwoord;
-        private DateTime geboortedatum;
+        private string geboortedatum;
 
         public bool Ingelogd
         {
@@ -23,8 +23,28 @@ namespace KillerApp_SE.Models
             get { return gebruikernaam; }
             set { gebruikernaam = value; }
         }
+        public string Naam
+        {
+            get { return naam; }
+            set { naam = value; }
+        }
+        public string Wachtwoord
+        {
+            get { return wachtwoord; }
+            set { wachtwoord = value; }
+        }
+        public string Adres
+        {
+            get { return adres; }
+            set { adres = value; }
+        }
+        public string Geboortedatum
+        {
+            get { return geboortedatum; }
+            set { geboortedatum = value; }
+        }
 
-        public Gebruiker(string naam, string adres, DateTime geboortedatum) : base(naam, adres)
+        public Gebruiker(string naam, string adres, string geboortedatum) : base(naam, adres)
         {
             this.geboortedatum = geboortedatum;
             this.naam = naam;
