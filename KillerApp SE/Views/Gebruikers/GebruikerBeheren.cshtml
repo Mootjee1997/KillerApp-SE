@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "GebruikerBeheren";
+}
+
+<div class="form-group">
+    <div class="col-lg-10">
+        <select multiple="" class="form-control" style="height: 400px">
+            @foreach (string gebruiker in ViewBag.Gebruikerslijst)
+            {
+                <option>@gebruiker</option>
+            }
+        </select>
+        <div class="form-group">
+            <label for="input" class="col-lg-2 control-label">Toon info van:</label>
+            <div class="col-lg-10">
+                <input name="Gebruikernaam" type="text" class="form-control" id="input" placeholder="Gebruikernaam" value="">
+            </div>
+        </div>
+        <p class="btn btn-success" style="margin-left: 390px; width: 100px; margin-top: 6px;"> @Html.ActionLink("Laad gegevens", "GetGebruikerGegevens", "Gebruikers")</p>
+        <div class="form-group">
+            <label for="input" class="col-lg-2 control-label">Naam:</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="input" placeholder="Naam" value="@ViewBag.Naam">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input" class="col-lg-2 control-label">Adres:</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="input" placeholder="Adres" value="@ViewBag.Adres">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input" class="col-lg-2 control-label">Geboortedatum:</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="input" placeholder="Geboortedatum" value="@ViewBag.Geboortedatum">
+            </div>
+        </div>
+    </div>
+</div>
+

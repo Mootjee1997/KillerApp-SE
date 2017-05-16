@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewBag.Title = "GetMijnGegevens";
+}
+
+<form action="WijzigMijnGegevens" class="form-horizontal">
+    <fieldset style="margin-left: 16px;">
+        <legend style="margin-left: 166px;">Mijn gegevens</legend>
+        @* Naam *@
+        <div class="form-group">
+            <label for="input" class="col-lg-2 control-label">Naam</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="input" placeholder="Naam" value="@ViewBag.Naam">
+            </div>
+        </div>
+        @* Adres *@
+        <div class="form-group">
+            <label for="input" class="col-lg-2 control-label">Adres</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="input" placeholder="Adres" value="@ViewBag.Adres">
+            </div>
+        </div>
+        @* Geboortedatum *@
+        <div class="form-group">
+            <label for="input" class="col-lg-2 control-label">Geboortedatum</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="input" placeholder="YY-MM-DD" value="@ViewBag.Geboortedatum">
+            </div>
+        </div>
+
+        <p class="btn btn-success" style="margin-left: 390px; width: 160px; margin-top: 6px;">@Html.ActionLink("Gegevens Opslaan", "WijzigMijnGegevens", "Gebruikers")</p>
+    </fieldset>
+</form>
+
