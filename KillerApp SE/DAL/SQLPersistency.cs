@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.Collections.Generic;
 using System;
+using KillerApp_SE.Models;
 
 namespace KillerApp_SE.SQLContext
 {
@@ -52,20 +53,6 @@ namespace KillerApp_SE.SQLContext
             }
             return listResultaat;
         }
-        public List<string> GetGebruikerslijst()
-        {
-            CheckConn();
-            query = "SELECT Username FROM Login";
-            SqlCommand cmd = new SqlCommand(query, conn);
-            using (SqlDataReader reader = cmd.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    listResultaat.Add(reader.GetString(0));
-                }
-            }
-            return listResultaat;
-        }
         public List<string> GetGebruikersGegevens(string gebruikernaam)
         {
             CheckConn();
@@ -83,10 +70,26 @@ namespace KillerApp_SE.SQLContext
             }
             return listResultaat;
         }
+        public List<Gebruiker> GetGebruikersLijst()
+        {
+            List<Gebruiker> gebruikers = new List<Gebruiker>();
+            CheckConn();
+            query = "SELECT Username, Password, Naam, Adres, Geboortedatum FROM Gebruiker INNER JOIN Login ON Gebruiker.GebruikerID = Login.GebruikerID";
+            SqlCommand cmd = new SqlCommand(query, conn);
+            using (SqlDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    Gebruiker gebruiker = new Gebruiker(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4));
+                    gebruikers.Add(gebruiker);
+                }
+            }
+            return gebruikers;
+        }
         public void GebruikerToevoegen(string gebruikersnaam, string wachtwoord, string naam, string adres, string geboortedatum)
         {
             CheckConn();
-            query = "INSERT INTO Gebruiker (Naam, Adres, Geboortedatum) VALUES (@Naam, Adres, Geboortedatum)";
+            query = "INSERT INTO Gebruiker (Naam, Adres, Geboortedatum) VALUES (@Naam, @Adres, @Geboortedatum)";
             SqlCommand cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@Naam", naam);
             cmd.Parameters.AddWithValue("@Adres", adres);
@@ -96,11 +99,11 @@ namespace KillerApp_SE.SQLContext
             CheckConn();
             query = "INSERT INTO Login (GebruikerID, Username, Password) VALUES ((SELECT GebruikerID FROM Gebruiker WHERE Naam = @Naam AND Adres = @Adres), @Gebruikersnaam, @Wachtwoord)";
             SqlCommand cmd2 = new SqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@Naam", naam);
-            cmd.Parameters.AddWithValue("@Adres", adres);
-            cmd.Parameters.AddWithValue("@Gebruikersnaam", gebruikersnaam);
-            cmd.Parameters.AddWithValue("@Wachtwoord", wachtwoord);
-            cmd.ExecuteNonQuery();
+            cmd2.Parameters.AddWithValue("@Naam", naam);
+            cmd2.Parameters.AddWithValue("@Adres", adres);
+            cmd2.Parameters.AddWithValue("@Gebruikersnaam", gebruikersnaam);
+            cmd2.Parameters.AddWithValue("@Wachtwoord", wachtwoord);
+            cmd2.ExecuteNonQuery();
         }
         public void GebruikerVerwijderen(string gebruikernaam)
         {
@@ -151,7 +154,7 @@ namespace KillerApp_SE.SQLContext
             }
             return listResultaat;
         }
-        public void WijzigMijnGegevens(string gebruikernaam, string naam, string adres, string geboortedatum)
+        public void WijzigGegevens(string gebruikernaam, string naam, string adres, string geboortedatum, string wachtwoord)
         {
             CheckConn();
             query = "UPDATE GEBRUIKER SET Naam = @Naam, Adres = @Adres, Geboortedatum = @Geboortedatum WHERE GebruikerID = (SELECT GebruikerID FROM Login WHERE Username = @Gebruikernaam)";
@@ -161,6 +164,13 @@ namespace KillerApp_SE.SQLContext
             cmd.Parameters.AddWithValue("@Geboortedatum", geboortedatum);
             cmd.Parameters.AddWithValue("@Gebruikernaam", gebruikernaam);
             cmd.ExecuteNonQuery();
+
+            CheckConn();
+            query = "UPDATE Login SET Password = @Wachtwoord WHERE Username = @Gebruikernaam";
+            SqlCommand cmd2 = new SqlCommand(query, conn);
+            cmd2.Parameters.AddWithValue("@Gebruikernaam", gebruikernaam);
+            cmd2.Parameters.AddWithValue("@Wachtwoord", wachtwoord);
+            cmd2.ExecuteNonQuery();
         }
     }
 }

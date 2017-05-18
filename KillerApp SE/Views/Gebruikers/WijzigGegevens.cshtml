@@ -1,0 +1,60 @@
+﻿@model KillerApp_SE.Models.Gebruiker
+@using KillerApp_SE.Models
+
+@{
+    ViewBag.Title = "WijzigGegevens";
+}
+
+<h2>WijzigGegevens</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Gebruiker</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Naam, htmlAttributes: new { @class = "control-label col-md-2", @Value = Model.Naam })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Naam, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Naam, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Adres, htmlAttributes: new { @class = "control-label col-md-2", @Value = Model.Adres })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Adres, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Adres, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Geboortedatum, htmlAttributes: new { @class = "control-label col-md-2", @Value = Model.Geboortedatum })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Geboortedatum, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Geboortedatum, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Wachtwoord, htmlAttributes: new { @class = "control-label col-md-2", @Value = "" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Wachtwoord, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Wachtwoord, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default", new { id = gebruiker.Gebruikernaam />
+            </div>
+        </div>
+    </div>
+}
+<div>
+    @Html.ActionLink("Terug naar gebruikersbeheer", "GebruikerBeheren")
+</div>

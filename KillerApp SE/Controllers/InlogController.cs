@@ -23,8 +23,6 @@ namespace KillerApp_SE.Controllers
         {
             List<string> gebruikerInfo = new List<string>();
             gebruikerInfo = rep.Login(gebruikernaam, wachtwoord);
-            gebruiker = new Gebruiker(gebruikerInfo.ElementAt(0), gebruikerInfo.ElementAt(1), Convert.ToDateTime(gebruikerInfo.ElementAt(2)));
-            gebruiker.Ingelogd = true;
             
             return View(gebruikernaam);
         }

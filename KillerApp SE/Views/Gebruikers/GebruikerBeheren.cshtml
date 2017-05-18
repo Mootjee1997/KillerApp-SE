@@ -1,41 +1,45 @@
-﻿
+﻿@model KillerApp_SE.Models.Gebruiker
+@using KillerApp_SE.Models
+
 @{
     ViewBag.Title = "GebruikerBeheren";
 }
 
-<div class="form-group">
-    <div class="col-lg-10">
-        <select multiple="" class="form-control" style="height: 400px">
-            @foreach (string gebruiker in ViewBag.Gebruikerslijst)
-            {
-                <option>@gebruiker</option>
-            }
-        </select>
-        <div class="form-group">
-            <label for="input" class="col-lg-2 control-label">Toon info van:</label>
-            <div class="col-lg-10">
-                <input name="Gebruikernaam" type="text" class="form-control" id="input" placeholder="Gebruikernaam" value="">
-            </div>
-        </div>
-        <p class="btn btn-success" style="margin-left: 390px; width: 100px; margin-top: 6px;"> @Html.ActionLink("Laad gegevens", "GetGebruikerGegevens", "Gebruikers")</p>
-        <div class="form-group">
-            <label for="input" class="col-lg-2 control-label">Naam:</label>
-            <div class="col-lg-10">
-                <input type="text" class="form-control" id="input" placeholder="Naam" value="@ViewBag.Naam">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="input" class="col-lg-2 control-label">Adres:</label>
-            <div class="col-lg-10">
-                <input type="text" class="form-control" id="input" placeholder="Adres" value="@ViewBag.Adres">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="input" class="col-lg-2 control-label">Geboortedatum:</label>
-            <div class="col-lg-10">
-                <input type="text" class="form-control" id="input" placeholder="Geboortedatum" value="@ViewBag.Geboortedatum">
-            </div>
-        </div>
-    </div>
-</div>
+<h2 style="margin-left: 450px">Gebruikers Beheren</h2>
 
+<p>
+    @Html.ActionLink("Nieuwe gebruiker", "GebruikerToevoegen")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Naam)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Adres)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Geboortedatum)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var gebruiker in (List<Gebruiker>)ViewData["gebruikers"])
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => gebruiker.Naam)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => gebruiker.Adres)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => gebruiker.Geboortedatum)
+            </td>
+            <td>
+                @Html.ActionLink("Wijzig", "WijzigGegevens", new { id = gebruiker.Gebruikernaam }) |
+                @Html.ActionLink("Verwijder gebruiker", "VerwijderGebruiker", new { id = gebruiker.Gebruikernaam })
+            </td>
+        </tr>
+    }
+</table>

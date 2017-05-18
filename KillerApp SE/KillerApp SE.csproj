@@ -134,7 +134,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -152,8 +154,8 @@
     <Compile Include="Models\Persoon.cs" />
     <Compile Include="Models\Uitgever.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DAL\SQLRepository\Repository.cs" />
-    <Compile Include="DAL\SQLContext\SQLPersistency.cs" />
+    <Compile Include="DAL\Repository.cs" />
+    <Compile Include="DAL\SQLPersistency.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -170,12 +172,12 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Inlog\Index.cshtml" />
     <Content Include="Views\MijnBoeken\Index.cshtml" />
-    <Content Include="Views\Gebruikers\GebruikerBeheren.cshtml" />
     <Content Include="Views\MijnBoeken\FindBoek.cshtml" />
     <Content Include="Views\Inlog\Authorise.cshtml" />
-    <Content Include="Views\Gebruikers\GetMijnGegevens.cshtml" />
-    <Content Include="Views\Gebruikers\GebruikerResetten.cshtml" />
     <Content Include="Views\Gebruikers\GebruikerToevoegen.cshtml" />
+    <Content Include="Views\Gebruikers\WijzigMijnGegevens.cshtml" />
+    <Content Include="Views\Gebruikers\GebruikerBeheren.cshtml" />
+    <Content Include="Views\Gebruikers\WijzigGegevens.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

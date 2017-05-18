@@ -10,6 +10,17 @@ namespace KillerApp_SE.Models
         protected string naam;
         protected string adres;
 
+        public string Naam
+        {
+            get { return naam; }
+            set { naam = value; }
+        }
+        public string Adres
+        {
+            get { return adres; }
+            set { adres = value; }
+        }
+
         public Persoon(string naam, string adres)
         {
             this.naam = naam;

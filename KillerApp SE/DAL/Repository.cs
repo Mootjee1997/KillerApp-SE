@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using KillerApp_SE.SQLContext;
+using KillerApp_SE.Models;
 
 namespace KillerApp_SE.SQLRepository
 {
@@ -18,17 +19,17 @@ namespace KillerApp_SE.SQLRepository
         {
             return db.GetBoekenlijst();
         }
-        public List<string> GetGebruikerslijst()
-        {
-            return db.GetGebruikerslijst();
-        }
         public List<string> GetGebruikersGegevens(string gebruikernaam)
         {
             return db.GetGebruikersGegevens(gebruikernaam);
         }
+        public List<Gebruiker> GetGebruikersLijst()
+        {
+            return db.GetGebruikersLijst();
+        }
         public void GebruikerToevoegen(string gebruikersnaam, string wachtwoord, string naam, string adres, string geboortedatum)
         {
-            db.GebruikerToevoegen(gebruikersnaam, wachtwoord, naam, adres, gebruikersnaam);
+            db.GebruikerToevoegen(gebruikersnaam, wachtwoord, naam, adres, geboortedatum);
         }
         public void GebruikerVerwijderen(string gebruikersnaam)
         {
@@ -50,9 +51,9 @@ namespace KillerApp_SE.SQLRepository
         {
             return db.GetBoekInfo(titel);
         }
-        public void WijzigMijnGegevens(string gebruikernaam, string naam, string adres, string geboortedatum)
+        public void WijzigGegevens(string gebruikernaam, string naam, string adres, string geboortedatum, string wachtwoord)
         {
-            db.WijzigMijnGegevens(gebruikernaam, naam, adres, geboortedatum);
+            db.WijzigGegevens(gebruikernaam, naam, adres, geboortedatum, wachtwoord);
         }
     }
 }
