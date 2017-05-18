@@ -20,7 +20,7 @@ namespace KillerApp_SE.Models
         public Gebruiker Zoekgebruiker(string gebruikernaam)
         {
             GetGebruikersLijst();
-            Gebruiker gebruiker = new Gebruiker("", "", "", "", "");
+            Gebruiker gebruiker = new Gebruiker("", "", "", "", "", "");
             foreach (Gebruiker g in gebruikers)
             {
                 if (g.Gebruikernaam == gebruikernaam)
@@ -33,8 +33,8 @@ namespace KillerApp_SE.Models
         //Gebruiker toevoegen
         public void GebruikerToevoegen(string gebruikernaam, string wachtwoord, string naam, string adres, string geboortedatum)
         {
-            Gebruiker gebruiker = new Gebruiker(gebruikernaam, wachtwoord, naam, adres, geboortedatum);
-            rep.GebruikerToevoegen(gebruikernaam, wachtwoord, naam, adres, geboortedatum);
+            Gebruiker gebruiker = new Gebruiker(gebruikernaam, wachtwoord, naam, adres, geboortedatum, "Gebruiker");
+            rep.GebruikerToevoegen(gebruikernaam, wachtwoord, naam, adres, geboortedatum, "Gebruiker");
         }
         //Gegevens van een gebruiker wijzigen
         public void WijzigGegevens(string gebruikernaam, string naam, string adres, string geboortedatum, string wachtwoord)

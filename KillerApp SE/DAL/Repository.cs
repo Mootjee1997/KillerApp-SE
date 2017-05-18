@@ -27,9 +27,9 @@ namespace KillerApp_SE.SQLRepository
         {
             return db.GetGebruikersLijst();
         }
-        public void GebruikerToevoegen(string gebruikersnaam, string wachtwoord, string naam, string adres, string geboortedatum)
+        public void GebruikerToevoegen(string gebruikersnaam, string wachtwoord, string naam, string adres, string geboortedatum, string status)
         {
-            db.GebruikerToevoegen(gebruikersnaam, wachtwoord, naam, adres, geboortedatum);
+            db.GebruikerToevoegen(gebruikersnaam, wachtwoord, naam, adres, geboortedatum, "Gebruiker");
         }
         public void GebruikerVerwijderen(string gebruikersnaam)
         {

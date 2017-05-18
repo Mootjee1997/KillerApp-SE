@@ -32,13 +32,14 @@ namespace KillerApp_SE.Models
             get { return geboortedatum; }
         }
 
-        public Gebruiker(string gebruikernaam, string wachtwoord, string naam, string adres, string geboortedatum) : base(naam, adres)
+        public Gebruiker(string gebruikernaam, string wachtwoord, string naam, string adres, string geboortedatum, string status) : base(naam, adres)
         {
             this.gebruikernaam = gebruikernaam;
             this.wachtwoord = wachtwoord;
             this.geboortedatum = geboortedatum;
             this.naam = naam;
             this.adres = adres;
+            this.status = status;
         }
     }
 }
