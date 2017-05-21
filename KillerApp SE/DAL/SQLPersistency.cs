@@ -22,10 +22,10 @@ namespace KillerApp_SE.SQLContext
             }
             conn.Open();
         }
-        public List<string> Login(string gebruikernaam, string wachtwoord)
+        public bool Login(string gebruikernaam, string wachtwoord)
         {
             CheckConn();
-            query = "SELECT Naam, Adres, Geboortedatum FROM Gebruiker WHERE GebruikerID = (SELECT GebruikerID FROM Login WHERE (Username = @Gebruikernaam) AND (Wachtwoord = @Wachtwoord))";
+            query = "SELECT (*) FROM Gebruiker WHERE GebruikerID = (SELECT GebruikerID FROM Login WHERE (Username = @Gebruikernaam) AND (Password = @Wachtwoord))";
             SqlCommand cmd = new SqlCommand(query, conn);
             using (SqlDataReader reader = cmd.ExecuteReader())
             {
@@ -33,11 +33,11 @@ namespace KillerApp_SE.SQLContext
                 {
                     while (reader.Read())
                     {
-                        listResultaat.Add(reader.GetString(0));
+                        return true;
                     }
                 }
             }
-            return listResultaat;
+            return false;
         }
         public List<string> GetBoekenlijst()
         {
@@ -109,7 +109,7 @@ namespace KillerApp_SE.SQLContext
         public void GebruikerVerwijderen(string gebruikernaam)
         {
             CheckConn();
-            query = "(IF(SELECT COUNT(*) FROM Boek-Gebruiker WHERE GebruikerID = (SELECT GebruikerID FROM Login WHERE Username = @Gebruikernaam)) = 0) DELETE FROM Gebruiker, Login WHERE GebruikerID = @GebruikerID";
+            query = "IF(SELECT COUNT(*) FROM [Boek-Gebruiker] WHERE GebruikerID = (SELECT GebruikerID FROM Login WHERE Username = @Gebruikernaam)) = 0 DELETE FROM Gebruiker WHERE GebruikerID = (SELECT GebruikerID FROM Login WHERE Username = @Gebruikernaam); DELETE FROM Login WHERE GebruikerID = (SELECT GebruikerID FROM Login WHERE Username = @Gebruikernaam)";
             SqlCommand cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@Gebruikernaam", gebruikernaam);
             cmd.ExecuteNonQuery();

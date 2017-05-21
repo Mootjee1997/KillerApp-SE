@@ -4,14 +4,14 @@
     ViewBag.Title = "WijzigMijnGegevens";
 }
 
-<h2>WijzigMijnGegevens</h2>
+<h2 style="margin-left: 460px;">Mijn gegevens</h2>
 
 @using (Html.BeginForm())
-{
+{ 
+    <div style="margin-left: 440px; color:palegreen"><b>@ViewBag.Message</b></div> 
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        <h4>Gebruiker</h4>
+    <div class="form-horizontal" style="margin-left: 280px;">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -49,11 +49,8 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Opslaan" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
-<div>
-    @Html.ActionLink("Terug naar gebruikersbeheer", "GebruikerBeheren")
-</div>

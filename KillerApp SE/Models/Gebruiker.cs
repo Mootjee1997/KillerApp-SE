@@ -7,6 +7,7 @@ namespace KillerApp_SE.Models
 {
     public class Gebruiker : Persoon
     {
+        private List<Boek> boeken = new List<Boek>();
         private string gebruikernaam;
         private string wachtwoord;
         private string geboortedatum;

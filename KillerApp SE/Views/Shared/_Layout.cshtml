@@ -6,52 +6,52 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/Style.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
 </head>
-<body>
-    <nav class="navbar navbar-default glyphicon-object-align-top">
-        <div class="container-fluid">
+<body bgcolor="#352B2B">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Mijn gegevens", "WijzigMijnGegevens", "Gebruikers", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Mijn boeken", "MijnBoeken", "Index", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active">@Html.ActionLink("Home", "Index", "Home")<span class="sr-only">(current)</span></li>
-                    <li class="active">@Html.ActionLink("Mijn gegevens", "MijnGegevens", "Gebruikers")<span class="sr-only">(current)</span></li>
-                    <li class="active">@Html.ActionLink("Mijn boeken", "MijnBoeken", "Index")<span class="sr-only">(current)</span></li>
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gebruikers beheren<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gebruikers <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li>@Html.ActionLink("Gebruiker beheren", "GebruikerBeheren", "Gebruikers")</li>
-                            <li>@Html.ActionLink("Gebruiker toevoegen", "GebruikerToevoegen", "Gebruikers")</li>
-                            <li>@Html.ActionLink("Gebruiker verwijderen", "GebruikerVerwijderen", "Gebruikers")</li>
-                            <li>@Html.ActionLink("Gebruiker resetten", "GebruikerResetten", "Gebruikers")</li>
+                            <li>@Html.ActionLink("Gebruikersbeheer", "GebruikerBeheren", "Gebruikers", new { area = "" }, new { @class = "navbar-brand" })</li>
+                            <li>@Html.ActionLink("Gebruiker toevoegen", "GebruikerToevoegen", "Gebruikers", new { area = "" }, new { @class = "navbar-brand" })</li>
                         </ul>
                     </li>
                 </ul>
                 <form class="navbar-form navbar-left" role="search">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Zoek binnen de catalogus" style="width: 350px;">
+                        <input type="text" class="form-control" placeholder="Zoek binnen catalogus">
                     </div>
-                    <button type="submit" class="btn btn-default" style="width: 140px;">@Html.ActionLink("Zoek", "FindBoek", "MijnBoeken")</button>
+                    <button type="submit" class="btn btn-default">Zoek</button>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Inloggen</a></li>
+                    @Html.ActionLink("Login", "Index", "Inlog", new { area = "" }, new { @class = "navbar-brand" })
                 </ul>
             </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav"></ul>
+            </div>
         </div>
-    </nav>
+    </div>
 
     <div class="container body-content">
         @RenderBody()
         <hr />
     </div>
+
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
 </body>

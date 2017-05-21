@@ -24,43 +24,48 @@ namespace KillerApp_SE.Controllers
         public ActionResult GebruikerToevoegen(FormCollection fc)
         {
             bib.GebruikerToevoegen(fc["Gebruikernaam"], fc["Wachtwoord"], fc["Naam"], fc["Adres"], fc["Geboortedatum"]);
+            if (bib.Zoekgebruiker(fc["Gebruikernaam"]) != null)
+            {
+                ViewBag.Message = "Gebruiker succesvol aangemaakt!";
+            }
             return View();
         }
         //
         [HttpGet]
         public ActionResult WijzigMijnGegevens()
         {
-            Gebruiker gebruiker = bib.Zoekgebruiker("Admin");
-            return View(gebruiker);
+            return View(bib.Zoekgebruiker("Admin"));
         }
         //
         [HttpPost]
         public ActionResult WijzigMijnGegevens(FormCollection fc)
         {
             bib.WijzigGegevens("Admin", fc["Naam"], fc["Adres"], fc["Geboortedatum"], fc["Wachtwoord"]);
-            Gebruiker gebruiker = bib.Zoekgebruiker("Admin");
-            return View(gebruiker);
+            ViewBag.Message = "Uw gegevens zijn succesvol gewijzigd.";
+            return View(bib.Zoekgebruiker("Admin"));
         }
         //
         [HttpGet]
         public ActionResult GebruikerBeheren()
         {
-            gebruikers = bib.GetGebruikersLijst();
-            ViewData["gebruikers"] = gebruikers;
+            ViewData["gebruikers"] = bib.GetGebruikersLijst();
             return View();
         }
         [HttpGet]
         public ActionResult WijzigGegevens(string id)
         {
-            Gebruiker gebruiker = bib.Zoekgebruiker(id);
-            return View(gebruiker);
+            return View(bib.Zoekgebruiker(id));
         }
         [HttpPost]
         public ActionResult WijzigGegevens(FormCollection fc, string id)
         {
             bib.WijzigGegevens(id, fc["Naam"], fc["Adres"], fc["Geboortedatum"], fc["Wachtwoord"]);
-            Gebruiker gebruiker = bib.Zoekgebruiker(id);
-            return View(gebruiker);
+            return View(bib.Zoekgebruiker(id));
+        }
+        [HttpGet]
+        public void VerwijderGebruiker(string id)
+        {
+            bib.VerwijderGebruiker(id);
         }
     }
 }

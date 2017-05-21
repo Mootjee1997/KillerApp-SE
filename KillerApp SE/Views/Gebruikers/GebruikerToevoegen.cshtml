@@ -4,13 +4,14 @@
     ViewBag.Title = "GebruikerToevoegen";
 }
 
-<h2>Gebruiker Toevoegen</h2>
+<h2 style="margin-left: 425px;">Gebruiker Toevoegen</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
+    <div style="margin-left: 440px; color:palegreen"><b>@ViewBag.Message</b></div>
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
+    <div class="form-horizontal" style="margin-left: 280px;">
 
         <div class="form-group">
             @Html.LabelFor(model => model.Gebruikernaam, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -54,11 +55,11 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Maak aan" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
-<div>
+<div style="margin-top:-44px; margin-left: 521px">
     @Html.ActionLink("Terug naar gebruikersbeheer", "GebruikerBeheren")
 </div>

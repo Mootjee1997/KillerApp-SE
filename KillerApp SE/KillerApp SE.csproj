@@ -173,7 +173,6 @@
     <Content Include="Views\Inlog\Index.cshtml" />
     <Content Include="Views\MijnBoeken\Index.cshtml" />
     <Content Include="Views\MijnBoeken\FindBoek.cshtml" />
-    <Content Include="Views\Inlog\Authorise.cshtml" />
     <Content Include="Views\Gebruikers\GebruikerToevoegen.cshtml" />
     <Content Include="Views\Gebruikers\WijzigMijnGegevens.cshtml" />
     <Content Include="Views\Gebruikers\GebruikerBeheren.cshtml" />

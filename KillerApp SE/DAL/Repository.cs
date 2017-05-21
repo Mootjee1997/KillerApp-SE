@@ -11,7 +11,7 @@ namespace KillerApp_SE.SQLRepository
     {
         SQLPersistency db = new SQLPersistency();
 
-        public List<string> Login(string gebruikernaam, string wachtwoord)
+        public bool Login(string gebruikernaam, string wachtwoord)
         {
             return db.Login(gebruikernaam, wachtwoord);
         }
