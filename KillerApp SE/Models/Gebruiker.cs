@@ -13,6 +13,11 @@ namespace KillerApp_SE.Models
         private string geboortedatum;
         private string status;
 
+        public List<Boek> Boeken
+        {
+            get { return boeken; }
+            set { boeken = value; }
+        }
         public string Gebruikernaam
         {
             get { return gebruikernaam; }
@@ -30,7 +35,7 @@ namespace KillerApp_SE.Models
         }
         public string Status
         {
-            get { return geboortedatum; }
+            get { return status; }
         }
 
         public Gebruiker(string gebruikernaam, string wachtwoord, string naam, string adres, string geboortedatum, string status) : base(naam, adres)

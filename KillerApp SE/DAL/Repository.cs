@@ -15,13 +15,13 @@ namespace KillerApp_SE.SQLRepository
         {
             return db.Login(gebruikernaam, wachtwoord);
         }
-        public List<string> GetBoekenlijst()
+        public List<Boek> GetBoekenlijst()
         {
             return db.GetBoekenlijst();
         }
-        public List<string> GetGebruikersGegevens(string gebruikernaam)
+        public List<Boek> GetMijnBoeken(string gebruikernaam)
         {
-            return db.GetGebruikersGegevens(gebruikernaam);
+            return db.GetMijnBoeken(gebruikernaam);
         }
         public List<Gebruiker> GetGebruikersLijst()
         {
@@ -47,13 +47,14 @@ namespace KillerApp_SE.SQLRepository
         {
             db.ReturnBoeken(gebruikernaam);
         }
-        public List<string> GetBoekInfo(string titel)
-        {
-            return db.GetBoekInfo(titel);
-        }
         public void WijzigGegevens(string gebruikernaam, string naam, string adres, string geboortedatum, string wachtwoord)
         {
             db.WijzigGegevens(gebruikernaam, naam, adres, geboortedatum, wachtwoord);
+        }
+
+        public void UpdateBoek(string titel)
+        {
+            db.UpdateBoek(titel);
         }
     }
 }

@@ -143,7 +143,7 @@
     <Compile Include="Controllers\GebruikersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InlogController.cs" />
-    <Compile Include="Controllers\MijnBoekenController.cs" />
+    <Compile Include="Controllers\BoekenController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -170,13 +170,13 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Inlog\Index.cshtml" />
-    <Content Include="Views\MijnBoeken\Index.cshtml" />
-    <Content Include="Views\MijnBoeken\FindBoek.cshtml" />
+    <Content Include="Views\Inlog\Login.cshtml" />
     <Content Include="Views\Gebruikers\GebruikerToevoegen.cshtml" />
     <Content Include="Views\Gebruikers\WijzigMijnGegevens.cshtml" />
     <Content Include="Views\Gebruikers\GebruikerBeheren.cshtml" />
     <Content Include="Views\Gebruikers\WijzigGegevens.cshtml" />
+    <Content Include="Views\Boeken\ZoekBoek.cshtml" />
+    <Content Include="Views\Boeken\MijnBoeken.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -25,8 +25,10 @@ namespace KillerApp_SE.SQLContext
         public bool Login(string gebruikernaam, string wachtwoord)
         {
             CheckConn();
-            query = "SELECT (*) FROM Gebruiker WHERE GebruikerID = (SELECT GebruikerID FROM Login WHERE (Username = @Gebruikernaam) AND (Password = @Wachtwoord))";
+            query = "SELECT * FROM Gebruiker WHERE GebruikerID = (SELECT GebruikerID FROM Login WHERE (Username = @Gebruikernaam) AND (Password = @Wachtwoord))";
             SqlCommand cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@Gebruikernaam", gebruikernaam);
+            cmd.Parameters.AddWithValue("@Wachtwoord", wachtwoord);
             using (SqlDataReader reader = cmd.ExecuteReader())
             {
                 if (reader.HasRows)
@@ -39,36 +41,38 @@ namespace KillerApp_SE.SQLContext
             }
             return false;
         }
-        public List<string> GetBoekenlijst()
+        public List<Boek> GetBoekenlijst()
         {
+            List<Boek> boeken = new List<Boek>();
             CheckConn();
-            query = "SELECT Titel FROM Boek";
+            query = "SELECT AuteurNaam, UitgeverNaam, Titel, Genre, AantalExemplaren, AantalBeschikbaar FROM Boek INNER JOIN Auteur ON Auteur.AuteurID = Boek.AuteurID INNER JOIN Uitgever ON Uitgever.UitgeverID = Boek.UitgeverID";
             SqlCommand cmd = new SqlCommand(query, conn);
             using (SqlDataReader reader = cmd.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    listResultaat.Add(reader.GetString(0));
+                    Boek boek = new Boek(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt32(5), reader.GetInt32(4));
+                    boeken.Add(boek);
                 }
             }
-            return listResultaat;
+            return boeken;
         }
-        public List<string> GetGebruikersGegevens(string gebruikernaam)
+        public List<Boek> GetMijnBoeken(string gebruikernaam)
         {
+            List<Boek> boeken = new List<Boek>();
             CheckConn();
-            query = "SELECT Naam, Adres, Geboortedatum FROM Gebruiker WHERE GebruikerID = (SELECT GebruikerID FROM Login WHERE Username = @Gebruikernaam)";
+            query = "SELECT AuteurNaam, UitgeverNaam, Titel, Genre, AantalExemplaren, AantalBeschikbaar FROM Boek INNER JOIN Auteur ON Auteur.AuteurID = Boek.AuteurID INNER JOIN Uitgever ON Uitgever.UitgeverID = Boek.UitgeverID WHERE BoekID IN (SELECT BoekID FROM [Boek-Gebruiker] WHERE GebruikerID = (SELECT GebruikerID FROM Login WHERE Username = @Gebruikernaam))";
             SqlCommand cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@Gebruikernaam", gebruikernaam);
             using (SqlDataReader reader = cmd.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    listResultaat.Add(reader.GetString(0));
-                    listResultaat.Add(reader.GetString(1));
-                    listResultaat.Add(reader.GetString(2));
+                    Boek boek = new Boek(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt32(5), reader.GetInt32(4));
+                    boeken.Add(boek);
                 }
             }
-            return listResultaat;
+            return boeken;
         }
         public List<Gebruiker> GetGebruikersLijst()
         {
@@ -106,6 +110,14 @@ namespace KillerApp_SE.SQLContext
             cmd2.Parameters.AddWithValue("@Status", status);
             cmd2.ExecuteNonQuery();
         }
+        public void UpdateBoek(string titel)
+        {
+            CheckConn();
+            query = "UPDATE Boek SET AantalBeschikbaar = AantalBeschikbaar - 1 WHERE Titel = @Titel";
+            SqlCommand cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@Titel", titel);
+            cmd.ExecuteNonQuery();
+        }
         public void GebruikerVerwijderen(string gebruikernaam)
         {
             CheckConn();
@@ -126,7 +138,7 @@ namespace KillerApp_SE.SQLContext
         public void LeenBoek(string gebruikernaam, string titel)
         {
             CheckConn();
-            query = "INSERT INTO Boek-Gebruiker (BoekID, GebruikerID) VALUES ((SELECT BoekID FROM Boek WHERE Titel = @Titel), (SELECT GebruikerID FROM Login WHERE Username = @Gebruikernaam))";
+            query = "INSERT INTO [Boek-Gebruiker] (BoekID, GebruikerID) VALUES ((SELECT BoekID FROM Boek WHERE Titel = @Titel), (SELECT GebruikerID FROM Login WHERE Username = @Gebruikernaam))";
             SqlCommand cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@Gebruikernaam", gebruikernaam);
             cmd.Parameters.AddWithValue("@Titel", titel);
@@ -139,21 +151,6 @@ namespace KillerApp_SE.SQLContext
             SqlCommand cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@Gebruikernaam", gebruikernaam);
             cmd.ExecuteNonQuery();
-        }
-        public List<string> GetBoekInfo(string titel)
-        {
-            CheckConn();
-            query = "SELECT (SELECT Naam FROM Uitgever WHERE UitgeverID = (SELECT UitgeverID FROM Boek WHERE Titel = @Titel)), (SELECT Naam FROM Auteur WHERE AuteurID = (SELECT AuteurID FROM Boek WHERE Titel = @Titel)), Titel, Genre, AantalExemplaren, AantalBeschikbaar FROM Boek WHERE Titel = @Titel";
-            SqlCommand cmd = new SqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@Titel", titel);
-            using (SqlDataReader reader = cmd.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    listResultaat.Add(reader.GetString(0));
-                }
-            }
-            return listResultaat;
         }
         public void WijzigGegevens(string gebruikernaam, string naam, string adres, string geboortedatum, string wachtwoord)
         {

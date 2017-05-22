@@ -1,4 +1,18 @@
-﻿<!DOCTYPE html>
+﻿@using KillerApp_SE.Models
+@{
+    Bibliotheek bib = new Bibliotheek();
+
+    //public void GetGebruikernaam()
+    //{
+    //    string gebruikernaam = "";
+    //    if (Session["Gebruikernaam"] != null)
+    //    {
+    //        gebruikernaam = Session["Gebruikernaam"].ToString();
+    //    }
+    //}
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -11,6 +25,16 @@
 <body bgcolor="#352B2B">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
+            @if (Session["Gebruikernaam"] != null)
+            {
+                <ul class="nav navbar-nav navbar-right">
+                    <p style="font-size: 16px; color: white; margin-top: 15px; margin-left: -330px">
+                        <b>
+                            Ingelogd als: @Session["Gebruikernaam"]
+                        </b>
+                    </p>
+                </ul>
+            }
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
@@ -18,27 +42,51 @@
                     <span class="icon-bar"></span>
                 </button>
                 @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("Mijn gegevens", "WijzigMijnGegevens", "Gebruikers", new { area = "" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("Mijn boeken", "MijnBoeken", "Index", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                @if (Session["Gebruikernaam"] != null && Session["Gebruikernaam"].ToString() != null)
+                {
+                    @Html.ActionLink("Mijn gegevens", "WijzigMijnGegevens", "Gebruikers", new { area = "" }, new { @class = "navbar-brand" })
+                }
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gebruikers <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Boeken<span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li>@Html.ActionLink("Gebruikersbeheer", "GebruikerBeheren", "Gebruikers", new { area = "" }, new { @class = "navbar-brand" })</li>
-                            <li>@Html.ActionLink("Gebruiker toevoegen", "GebruikerToevoegen", "Gebruikers", new { area = "" }, new { @class = "navbar-brand" })</li>
+                            @if (Session["Gebruikernaam"] != null && bib.GetStatus(Session["Gebruikernaam"].ToString()) == "Gebruiker")
+                            {
+                                @Html.ActionLink("Mijn boeken", "MijnBoeken", "Boeken", new { area = "" }, new { @class = "navbar-brand" })
+                            }
+                            @Html.ActionLink("Catalogus", "ZoekBoek", "Boeken", new { area = "" }, new { @class = "navbar-brand" })
                         </ul>
                     </li>
                 </ul>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                @if (Session["Gebruikernaam"] != null && bib.GetStatus(Session["Gebruikernaam"].ToString()) == "Admin")
+                {
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gebruikers <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>@Html.ActionLink("Gebruikersbeheer", "GebruikerBeheren", "Gebruikers", new { area = "" }, new { @class = "navbar-brand" })</li>
+                                <li>@Html.ActionLink("Gebruiker toevoegen", "GebruikerToevoegen", "Gebruikers", new { area = "" }, new { @class = "navbar-brand" })</li>
+                            </ul>
+                        </li>
+                    </ul>
+                }
                 <form class="navbar-form navbar-left" role="search">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Zoek binnen catalogus">
+                        <input style="width: 450px" type="text" class="form-control" placeholder="Zoek binnen catalogus">
                     </div>
                     <button type="submit" class="btn btn-default">Zoek</button>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    @Html.ActionLink("Login", "Index", "Inlog", new { area = "" }, new { @class = "navbar-brand" })
+                    @if (Session["Gebruikernaam"] == null)
+                    {
+                        @Html.ActionLink("Login", "Login", "Inlog", new { area = "" }, new { @class = "navbar-brand" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Logout", "Logout", "Inlog", new { area = "" }, new { @class = "navbar-brand" })
+                    }
                 </ul>
             </div>
             <div class="navbar-collapse collapse">

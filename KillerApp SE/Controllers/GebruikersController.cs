@@ -34,15 +34,15 @@ namespace KillerApp_SE.Controllers
         [HttpGet]
         public ActionResult WijzigMijnGegevens()
         {
-            return View(bib.Zoekgebruiker("Admin"));
+            return View(bib.Zoekgebruiker(Session["Gebruikernaam"].ToString()));
         }
         //
         [HttpPost]
         public ActionResult WijzigMijnGegevens(FormCollection fc)
         {
-            bib.WijzigGegevens("Admin", fc["Naam"], fc["Adres"], fc["Geboortedatum"], fc["Wachtwoord"]);
+            bib.WijzigGegevens(Session["Gebruikernaam"].ToString(), fc["Naam"], fc["Adres"], fc["Geboortedatum"], fc["Wachtwoord"]);
             ViewBag.Message = "Uw gegevens zijn succesvol gewijzigd.";
-            return View(bib.Zoekgebruiker("Admin"));
+            return View(bib.Zoekgebruiker(Session["Gebruikernaam"].ToString()));
         }
         //
         [HttpGet]

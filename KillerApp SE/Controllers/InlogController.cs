@@ -14,21 +14,25 @@ namespace KillerApp_SE.Controllers
         Bibliotheek bib = new Bibliotheek();
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Login()
         {
             return View();
         }
         [HttpPost]
-        public ActionResult Index(FormCollection fc)
+        public ActionResult Login(FormCollection fc)
         {
-            if (!string.IsNullOrEmpty(fc["gebruikernaam"]) && !string.IsNullOrEmpty(fc["wachtwoord"]))
+            if (!string.IsNullOrEmpty(fc["gebruikernaam"]) && !string.IsNullOrEmpty(fc["wachtwoord"]) && bib.Login(fc["gebruikernaam"], fc["wachtwoord"]) == true)
             {
-                if (bib.Login(fc["gebruikernaam"], fc["wachtwoord"]) == true)
-                {
-                    Session["Gebruikernaam"] = fc["gebruikernaam"];
-                }
+                Session["Gebruikernaam"] = fc["gebruikernaam"];
+                return RedirectToAction("Index", "Home");
             }
-            else ViewBag.Message = "Gebruikersgegevens komen niet overeen."; 
+            else ViewBag.Message = "Gebruikersgegevens komen niet overeen.";
+            return View();
+        }
+        [HttpGet]
+        public ActionResult Logout(FormCollection fc)
+        {
+            Session["Gebruikernaam"] = null;
             return RedirectToAction("Index", "Home");
         }
     }

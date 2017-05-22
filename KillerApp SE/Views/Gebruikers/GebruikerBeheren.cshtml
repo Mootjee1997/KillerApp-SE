@@ -21,6 +21,9 @@
         <th>
             @Html.DisplayNameFor(model => model.Geboortedatum)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
         <th></th>
     </tr>
 
@@ -35,6 +38,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => gebruiker.Geboortedatum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => gebruiker.Status)
             </td>
             <td>
                 @Html.ActionLink("Wijzig", "WijzigGegevens", new { id = gebruiker.Gebruikernaam }) |

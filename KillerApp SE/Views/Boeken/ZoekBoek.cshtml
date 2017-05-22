@@ -1,0 +1,80 @@
+﻿@model KillerApp_SE.Models.Boek
+@using KillerApp_SE.Models
+
+@{
+    ViewBag.Title = "ZoekBoek";
+}
+
+@{
+    Bibliotheek bib = new Bibliotheek();
+}
+
+<h2 style="margin-left: 440px">Boeken catalogus</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Titel)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Genre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AantalBeschikbaar)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AantalExemplaren)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Auteur)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Uitgever)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var boek in (List<Boek>)ViewData["boeken"])
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => boek.Titel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => boek.Genre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => boek.AantalBeschikbaar)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => boek.AantalExemplaren)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => boek.Auteur)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => boek.Uitgever)
+            </td>
+            <td>
+                @if (Session["Gebruikernaam"] != null)
+                {
+                    if (bib.GetStatus(Session["Gebruikernaam"].ToString()) == "Gebruiker")
+                    {
+                        if (boek.AantalBeschikbaar > 0)
+                        {
+                            @Html.ActionLink("Leen boek", "LeenBoek", new { id = boek.Titel }) <br />
+                        }
+                        else
+                        {
+                        @Html.ActionLink("Niet beschikbaar", "", new { id = boek.Titel })
+                        }
+                    }
+                }
+                else
+                {
+                    @Html.ActionLink("Log in om te lenen", "login", "Inlog")
+                }
+            </td>
+        </tr>
+    }
+</table>

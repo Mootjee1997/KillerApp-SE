@@ -1,0 +1,51 @@
+﻿@model KillerApp_SE.Models.Boek
+@using KillerApp_SE.Models
+
+@{
+    ViewBag.Title = "MijnBoeken";
+}
+
+@{
+    Bibliotheek bib = new Bibliotheek();
+}
+
+<h2 style="margin-left: 440px">Mijn boeken</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Titel)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Genre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Auteur)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Uitgever)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var boek in (List<Boek>)ViewData["boeken"])
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => boek.Titel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => boek.Genre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => boek.Auteur)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => boek.Uitgever)
+            </td>
+            <td>
+                @Html.ActionLink("Breng terug", "BrengTerug", new { id = boek.Titel }) <br />
+            </td>
+        </tr>
+    }
+</table>

@@ -17,6 +17,20 @@ namespace KillerApp_SE.Models
         public List<Boek> boeken = new List<Boek>();
         Repository rep = new Repository();
 
+        public string GetStatus(string gebruikernaam)
+        {
+            string status = "";
+            GetGebruikersLijst();
+            foreach (Gebruiker g in gebruikers)
+            {
+                if (g.Gebruikernaam == gebruikernaam)
+                {
+                    status = g.Status;
+                    return status;
+                }
+            }
+            return status;
+        }
         public Gebruiker Zoekgebruiker(string gebruikernaam)
         {
             GetGebruikersLijst();
@@ -59,15 +73,35 @@ namespace KillerApp_SE.Models
             rep.WijzigGegevens(gebruikernaam, naam, adres, geboortedatum, wachtwoord);
             rep.GetGebruikersLijst();
         }
-        //Gegevens van een gebruiker ophalen
-        public List<string> GetGebruikerGegevens(string gebruikernaam)
-        {
-            return rep.GetGebruikersGegevens(gebruikernaam);
-        }
         public List<Gebruiker> GetGebruikersLijst()
         {
             gebruikers = rep.GetGebruikersLijst();
             return gebruikers;
+        }
+        public List<Boek> GetBoekenLijst()
+        {
+            boeken = rep.GetBoekenlijst();
+            return boeken;
+        }
+        public void LeenBoek(string gebruikernaam, string titel)
+        {
+            GetBoekenLijst();
+            foreach (Boek boek in boeken)
+            {
+                if (boek.Titel == titel)
+                {
+                    if (boek.AantalBeschikbaar > 0)
+                    {
+                        rep.LeenBoek(gebruikernaam, titel);
+                        rep.UpdateBoek(titel);
+                    }
+                }
+            }
+        }
+
+        public List<Boek> GetMijnBoeken(string gebruikernaam)
+        {
+            return rep.GetMijnBoeken(gebruikernaam);
         }
     }
 }
