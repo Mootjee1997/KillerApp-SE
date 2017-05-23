@@ -12,17 +12,38 @@ namespace KillerApp_SE.Controllers
         Bibliotheek bib = new Bibliotheek();
 
         [HttpGet]
-        public ActionResult ZoekBoek()
+        public ActionResult GetBoekenLijst()
         {
-            ViewData["boeken"] = bib.GetBoekenLijst(); 
+            ViewData["boeken"] = bib.GetBoekenLijst();
             return View();
-        } 
+        }
+        [HttpPost]
+        public ActionResult GetBoekenLijst(FormCollection fc)
+        {
+            return View();
+        }
         [HttpGet]
         public ActionResult LeenBoek(string id)
         {
+            ViewData["boeken"] = bib.GetBoekenLijst();
+            foreach (Boek boek in bib.GetMijnBoeken(Session["Gebruikernaam"].ToString()))
+            {
+                if (boek.Titel == id)
+                {
+                    ViewBag.Message = "Dit boek hebt u al geleend.";
+                    return View("GetBoekenLijst");
+                }
+            }
             bib.LeenBoek(Session["Gebruikernaam"].ToString(), id);
             ViewData["boeken"] = bib.GetBoekenLijst();
-            return View("ZoekBoek");
+            return View("GetBoekenLijst");
+        }
+        [HttpGet]
+        public ActionResult RetourBoek(string id)
+        {
+            bib.RetourBoek(Session["Gebruikernaam"].ToString(), id);
+            ViewData["boeken"] = bib.GetMijnBoeken(Session["Gebruikernaam"].ToString());
+            return View("MijnBoeken");
         }
         [HttpGet]
         public ActionResult MijnBoeken()

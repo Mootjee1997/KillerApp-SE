@@ -144,6 +144,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InlogController.cs" />
     <Compile Include="Controllers\BoekenController.cs" />
+    <Compile Include="DAL\Repository\BoekRepository.cs" />
+    <Compile Include="DAL\Repository\GebruikerRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -154,8 +156,7 @@
     <Compile Include="Models\Persoon.cs" />
     <Compile Include="Models\Uitgever.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DAL\Repository.cs" />
-    <Compile Include="DAL\SQLPersistency.cs" />
+    <Compile Include="DAL\SQL\SQLPersistency.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -175,8 +176,9 @@
     <Content Include="Views\Gebruikers\WijzigMijnGegevens.cshtml" />
     <Content Include="Views\Gebruikers\GebruikerBeheren.cshtml" />
     <Content Include="Views\Gebruikers\WijzigGegevens.cshtml" />
-    <Content Include="Views\Boeken\ZoekBoek.cshtml" />
+    <Content Include="Views\Boeken\GetBoekenLijst.cshtml" />
     <Content Include="Views\Boeken\MijnBoeken.cshtml" />
+    <Content Include="Views\Boeken\ZoekBoek.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

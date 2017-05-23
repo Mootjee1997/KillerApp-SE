@@ -7,21 +7,13 @@ using KillerApp_SE.Models;
 
 namespace KillerApp_SE.SQLRepository
 {
-    public class Repository
+    public class GebruikerRepository
     {
         SQLPersistency db = new SQLPersistency();
 
         public bool Login(string gebruikernaam, string wachtwoord)
         {
             return db.Login(gebruikernaam, wachtwoord);
-        }
-        public List<Boek> GetBoekenlijst()
-        {
-            return db.GetBoekenlijst();
-        }
-        public List<Boek> GetMijnBoeken(string gebruikernaam)
-        {
-            return db.GetMijnBoeken(gebruikernaam);
         }
         public List<Gebruiker> GetGebruikersLijst()
         {
@@ -35,26 +27,9 @@ namespace KillerApp_SE.SQLRepository
         {
             db.GebruikerVerwijderen(gebruikersnaam);
         }
-        public void GebruikerResetten(string gebruikersnaam, string wachtwoord)
-        {
-            db.GebruikerResetten(gebruikersnaam, wachtwoord);
-        }
-        public void LeenBoek(string gebruikernaam, string titel)
-        {
-            db.LeenBoek(gebruikernaam, titel);
-        }
-        public void ReturnBoeken(string gebruikernaam)
-        {
-            db.ReturnBoeken(gebruikernaam);
-        }
         public void WijzigGegevens(string gebruikernaam, string naam, string adres, string geboortedatum, string wachtwoord)
         {
             db.WijzigGegevens(gebruikernaam, naam, adres, geboortedatum, wachtwoord);
-        }
-
-        public void UpdateBoek(string titel)
-        {
-            db.UpdateBoek(titel);
         }
     }
 }

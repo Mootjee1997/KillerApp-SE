@@ -2,21 +2,25 @@
 @using KillerApp_SE.Models
 
 @{
-    ViewBag.Title = "ZoekBoek";
+    ViewBag.Title = "GetBoekenLijst";
 }
 
 @{
     Bibliotheek bib = new Bibliotheek();
 }
 
-<h2 style="margin-left: 440px">Boeken catalogus</h2>
+<h2 style="margin-left: 480px">Catalogus</h2>
 <div style="margin-left: 440px; color:red"><b>@ViewBag.Message</b></div>
 
 <form style="margin-left: 395px" class="navbar-form navbar-left" role="search">
     <div class="form-group">
         <input style="width: 800px;" name="ZoekTitel" type="text" class="form-control" placeholder="Search">
     </div>
-    @Html.ActionLink("Zoek", "ZoekBoek")
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Zoek" class="btn btn-default"/>
+        </div>
+    </div>
 </form>
 
 <table class="table">
@@ -74,7 +78,7 @@
                         }
                         else
                         {
-                            @Html.ActionLink("Niet beschikbaar", "", new { id = boek.Titel })
+                        @Html.ActionLink("Niet beschikbaar", "", new { id = boek.Titel })
                         }
                     }
                 }

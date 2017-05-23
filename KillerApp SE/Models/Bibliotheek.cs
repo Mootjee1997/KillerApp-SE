@@ -11,39 +11,38 @@ namespace KillerApp_SE.Models
 {
     public class Bibliotheek
     {
-        private string gebruikernaam;
-        public string Gebruikernaam { get { return gebruikernaam; } set { gebruikernaam = value; } }
+        GebruikerRepository grep = new GebruikerRepository();
+        BoekRepository brep = new BoekRepository();
         public List<Gebruiker> gebruikers = new List<Gebruiker>();
         public List<Boek> boeken = new List<Boek>();
-        Repository rep = new Repository();
 
         public string GetStatus(string gebruikernaam)
         {
-            string status = "";
             GetGebruikersLijst();
             foreach (Gebruiker g in gebruikers)
             {
                 if (g.Gebruikernaam == gebruikernaam)
                 {
-                    status = g.Status;
-                    return status;
+                    return g.Status;
                 }
             }
-            return status;
+            return null;
+        }
+        public List<Boek> ZoekBoek(string titel)
+        {
+            return brep.ZoekBoek(titel);
         }
         public Gebruiker Zoekgebruiker(string gebruikernaam)
         {
             GetGebruikersLijst();
-            Gebruiker gebruiker = new Gebruiker("", "", "", "", "", "");
             foreach (Gebruiker g in gebruikers)
             {
                 if (g.Gebruikernaam == gebruikernaam)
                 {
-                    gebruiker = g;
-                    return gebruiker;
+                    return g;
                 }
             }
-            return gebruiker;
+            return null;
         }
         public void VerwijderGebruiker(string gebruikernaam)
         {
@@ -52,35 +51,35 @@ namespace KillerApp_SE.Models
             {
                 if (g.Gebruikernaam == gebruikernaam)
                 {
-                    rep.GebruikerVerwijderen(gebruikernaam);
+                    grep.GebruikerVerwijderen(gebruikernaam);
                 }
             }
-            rep.GetGebruikersLijst();
+            grep.GetGebruikersLijst();
         }
         public bool Login(string gebruikernaam, string wachtwoord)
         {
-            return rep.Login(gebruikernaam, wachtwoord);
+            return grep.Login(gebruikernaam, wachtwoord);
         }
         //Gebruiker toevoegen
         public void GebruikerToevoegen(string gebruikernaam, string wachtwoord, string naam, string adres, string geboortedatum)
         {
-            rep.GebruikerToevoegen(gebruikernaam, wachtwoord, naam, adres, geboortedatum, "Gebruiker");
-            rep.GetGebruikersLijst();
+            grep.GebruikerToevoegen(gebruikernaam, wachtwoord, naam, adres, geboortedatum, "Gebruiker");
+            grep.GetGebruikersLijst();
         }
         //Gegevens van een gebruiker wijzigen
         public void WijzigGegevens(string gebruikernaam, string naam, string adres, string geboortedatum, string wachtwoord)
         {
-            rep.WijzigGegevens(gebruikernaam, naam, adres, geboortedatum, wachtwoord);
-            rep.GetGebruikersLijst();
+            grep.WijzigGegevens(gebruikernaam, naam, adres, geboortedatum, wachtwoord);
+            grep.GetGebruikersLijst();
         }
         public List<Gebruiker> GetGebruikersLijst()
         {
-            gebruikers = rep.GetGebruikersLijst();
+            gebruikers = grep.GetGebruikersLijst();
             return gebruikers;
         }
         public List<Boek> GetBoekenLijst()
         {
-            boeken = rep.GetBoekenlijst();
+            boeken = brep.GetBoekenlijst();
             return boeken;
         }
         public void LeenBoek(string gebruikernaam, string titel)
@@ -92,16 +91,19 @@ namespace KillerApp_SE.Models
                 {
                     if (boek.AantalBeschikbaar > 0)
                     {
-                        rep.LeenBoek(gebruikernaam, titel);
-                        rep.UpdateBoek(titel);
+                        brep.LeenBoek(gebruikernaam, titel);
+                        brep.UpdateBoek(titel);
                     }
                 }
             }
         }
-
+        public void RetourBoek(string gebruikernaam, string titel)
+        {
+            brep.RetourBoek(gebruikernaam, titel);
+        }
         public List<Boek> GetMijnBoeken(string gebruikernaam)
         {
-            return rep.GetMijnBoeken(gebruikernaam);
+            return brep.GetMijnBoeken(gebruikernaam);
         }
     }
 }

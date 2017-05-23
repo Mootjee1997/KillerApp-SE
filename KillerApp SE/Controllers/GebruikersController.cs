@@ -60,6 +60,7 @@ namespace KillerApp_SE.Controllers
         public ActionResult WijzigGegevens(FormCollection fc, string id)
         {
             bib.WijzigGegevens(id, fc["Naam"], fc["Adres"], fc["Geboortedatum"], fc["Wachtwoord"]);
+            ViewBag.Message = "Gegevens zijn succesvol gewijzigd.";
             return View(bib.Zoekgebruiker(id));
         }
         [HttpGet]
