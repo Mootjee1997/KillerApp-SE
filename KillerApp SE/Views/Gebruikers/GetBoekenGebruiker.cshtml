@@ -68,26 +68,6 @@
                 <td>
                     @Html.DisplayFor(modelItem => boek.Uitgever)
                 </td>
-                <td>
-                    @if (Session["Gebruikernaam"] != null)
-                {
-                    if (bib.GetStatus(Session["Gebruikernaam"].ToString()) == "Gebruiker")
-                    {
-                        if (boek.AantalBeschikbaar > 0)
-                        {
-                                @Html.ActionLink("Leen boek", "LeenBoek", new { id = boek.Titel }) <br />
-                            }
-                            else
-                            {
-                                @Html.ActionLink("Niet beschikbaar", "", new { id = boek.Titel })
-                            }
-                        }
-                    }
-                    else
-                    {
-                        @Html.ActionLink("Log in om te lenen", "login", "Inlog")
-                    }
-                </td>
             </tr>
         }
     </table>

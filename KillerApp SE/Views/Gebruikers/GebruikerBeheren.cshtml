@@ -52,19 +52,25 @@
                     @Html.DisplayFor(modelItem => gebruiker.Status)
                 </td>
                 <td>
-                    @Html.ActionLink("Wijzig", "WijzigGegevens", new { id = gebruiker.Gebruikernaam }) <br />
-                    @if (bib.GetStatus(gebruiker.Gebruikernaam) != "Admin")
-                    {
-                        @Html.ActionLink("Boekenlijst", "GetBoekenGebruiker", new { id = gebruiker.Gebruikernaam }) <br />
-                    }
-                    @if (Session["Gebruikernaam"].ToString() != gebruiker.Gebruikernaam)
-                    {
-                        @Html.ActionLink("Verwijder gebruiker", "VerwijderGebruiker", new { id = gebruiker.Gebruikernaam }, new { @style = "color: Red" }) <br />
-                    }
-                    @if (bib.GetMijnBoeken(gebruiker.Gebruikernaam).Count > 0)
-                    {
-                        @Html.ActionLink("Retour boeken", "RetourBoekenGebruiker", new { id = gebruiker.Gebruikernaam }, new { @style = "color: Green" })
-                    }
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-default">Opties</a>
+                        <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Wijzig", "WijzigGegevens", new { id = gebruiker.Gebruikernaam })</li>
+                            @if (bib.GetMijnBoeken(gebruiker.Gebruikernaam).Count > 0 && bib.GetStatus(gebruiker.Gebruikernaam) != "Admin")
+                            {
+                                <li>@Html.ActionLink("Boekenlijst", "GetBoekenGebruiker", new { id = gebruiker.Gebruikernaam })</li>
+                            }
+                            @if (Session["Gebruikernaam"].ToString() != gebruiker.Gebruikernaam)
+                            {
+                                <li>@Html.ActionLink("Verwijder gebruiker", "VerwijderGebruiker", new { id = gebruiker.Gebruikernaam }, new { @style = "color: Red" })</li>
+                            }
+                            @if (bib.GetMijnBoeken(gebruiker.Gebruikernaam).Count > 0)
+                            {
+                                <li>@Html.ActionLink("Retour boeken", "RetourBoekenGebruiker", new { id = gebruiker.Gebruikernaam }, new { @style = "color: Green" })</li>
+                            }
+                        </ul>
+                    </div>             
                 </td>
             </tr>
         }

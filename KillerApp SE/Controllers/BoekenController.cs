@@ -26,16 +26,7 @@ namespace KillerApp_SE.Controllers
         public ActionResult LeenBoek(string id)
         {
             if (Session["Gebruikernaam"] != null)
-            {
-                ViewData["boeken"] = bib.GetBoekenLijst();
-                foreach (Boek boek in bib.GetMijnBoeken(Session["Gebruikernaam"].ToString()))
-                {
-                    if (boek.Titel == id)
-                    {
-                        ViewBag.Message = "Dit boek hebt u al geleend.";
-                        return View("GetBoekenLijst");
-                    }
-                }
+            {             
                 bib.LeenBoek(Session["Gebruikernaam"].ToString(), id);
                 ViewData["boeken"] = bib.GetBoekenLijst();
                 return View("GetBoekenLijst");
@@ -57,17 +48,11 @@ namespace KillerApp_SE.Controllers
             else return RedirectToAction("Login", "Inlog");
         }
         [HttpGet]
-        public ActionResult MijnBoeken(string id)
+        public ActionResult MijnBoeken()
         {
             if (Session["Gebruikernaam"] != null)
             {
-                if (string.IsNullOrEmpty(id))
-                {
-                    ViewData["boeken"] = bib.GetMijnBoeken(Session["Gebruikernaam"].ToString());
-                    ViewBag.Message = "Je hebt nog geen geleende boeken om te weergeven.";
-                    return View();
-                }
-                else ViewData["boeken"] = bib.GetMijnBoeken(id);
+                ViewData["boeken"] = bib.GetMijnBoeken(Session["Gebruikernaam"].ToString());
                 return View();
             }
             else return RedirectToAction("Login", "Inlog");

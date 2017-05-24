@@ -70,16 +70,15 @@
                 </td>
                 <td>
                     @if (Session["Gebruikernaam"] != null)
-                {
-                    if (bib.GetStatus(Session["Gebruikernaam"].ToString()) == "Gebruiker")
                     {
-                        if (boek.AantalBeschikbaar > 0)
+                        if (bib.GetStatus(Session["Gebruikernaam"].ToString()) == "Gebruiker")
                         {
-                                @Html.ActionLink("Leen boek", "LeenBoek", new { id = boek.Titel }) <br />
-                            }
-                            else
+                            if (bib.ZoekMijnBoekenLijst(Session["Gebruikernaam"].ToString(), boek.Titel) == false)
                             {
-                                @Html.ActionLink("Niet beschikbaar", "", new { id = boek.Titel })
+                                if (boek.AantalBeschikbaar > 0)
+                                {
+                                    @Html.ActionLink("Leen boek", "LeenBoek", new { id = boek.Titel }) <br />
+                                }
                             }
                         }
                     }

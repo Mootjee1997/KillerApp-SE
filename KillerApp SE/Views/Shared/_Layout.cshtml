@@ -13,8 +13,8 @@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
 </head>
-<body bgcolor="#352B2B">
-    <div class="navbar navbar-inverse navbar-fixed-top">
+<body style="background-color: #D8D8D8">
+    <div style="background-color: black" class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -27,7 +27,14 @@
                 {
                     <ul class="nav navbar-nav">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ingelogd als: <font color="Red">@Session["Gebruikernaam"]</font> <span class="caret"></span></a>
+                            @if (Session["Gebruikernaam"] != null && bib.GetStatus(Session["Gebruikernaam"].ToString()) == "Admin")
+                            {
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ingelogd als: <font color="Red">@bib.GetNaam(Session["Gebruikernaam"].ToString())</font> <span class="caret"></span></a>
+                            }
+                            else
+                            {
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ingelogd als: <font color="#01DF01">@bib.GetNaam(Session["Gebruikernaam"].ToString())</font> <span class="caret"></span></a>
+                            }                         
                             <ul class="dropdown-menu" role="menu">
                                 <li>@Html.ActionLink("Mijn gegevens", "WijzigMijnGegevens", "Gebruikers", new { area = "" }, new { @class = "Elements" })</li>
                             </ul>

@@ -16,6 +16,17 @@ namespace KillerApp_SE.Models
         public List<Gebruiker> gebruikers = new List<Gebruiker>();
         public List<Boek> boeken = new List<Boek>();
 
+        public bool ZoekMijnBoekenLijst(string gebruikernaam, string titel)
+        {
+            foreach (Boek b in GetMijnBoeken(gebruikernaam))
+            {
+                if (b.Titel == titel)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public string GetStatus(string gebruikernaam)
         {
             GetGebruikersLijst();
@@ -24,6 +35,18 @@ namespace KillerApp_SE.Models
                 if (g.Gebruikernaam == gebruikernaam)
                 {
                     return g.Status;
+                }
+            }
+            return null;
+        }
+        public string GetNaam(string gebruikernaam)
+        {
+            GetGebruikersLijst();
+            foreach (Gebruiker g in gebruikers)
+            {
+                if (g.Gebruikernaam == gebruikernaam)
+                {
+                    return g.Naam;
                 }
             }
             return null;
