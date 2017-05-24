@@ -4,6 +4,9 @@
 @{
     ViewBag.Title = "GebruikerBeheren";
 }
+@{
+    Bibliotheek bib = new Bibliotheek();
+}
 
 <center>
     <h2>Gebruikers Beheren</h2>
@@ -49,10 +52,18 @@
                     @Html.DisplayFor(modelItem => gebruiker.Status)
                 </td>
                 <td>
-                    @Html.ActionLink("Wijzig", "WijzigGegevens", new { id = gebruiker.Gebruikernaam }) |
+                    @Html.ActionLink("Wijzig", "WijzigGegevens", new { id = gebruiker.Gebruikernaam }) <br />
+                    @if (bib.GetStatus(gebruiker.Gebruikernaam) != "Admin")
+                    {
+                        @Html.ActionLink("Boekenlijst", "GetBoekenGebruiker", new { id = gebruiker.Gebruikernaam }) <br />
+                    }
                     @if (Session["Gebruikernaam"].ToString() != gebruiker.Gebruikernaam)
                     {
-                        @Html.ActionLink("Verwijder gebruiker", "VerwijderGebruiker", new { id = gebruiker.Gebruikernaam })
+                        @Html.ActionLink("Verwijder gebruiker", "VerwijderGebruiker", new { id = gebruiker.Gebruikernaam }, new { @style = "color: Red" }) <br />
+                    }
+                    @if (bib.GetMijnBoeken(gebruiker.Gebruikernaam).Count > 0)
+                    {
+                        @Html.ActionLink("Retour boeken", "RetourBoekenGebruiker", new { id = gebruiker.Gebruikernaam }, new { @style = "color: Green" })
                     }
                 </td>
             </tr>

@@ -8,7 +8,8 @@
 
 @using (Html.BeginForm())
 { 
-    <div style="margin-left: 430px; color:green"><b>@ViewBag.Message</b></div> 
+    <div style="margin-left: 430px; color:green"><b>@ViewBag.Message</b></div>
+    <div style="margin-left: 465px; color:red"><b>@ViewBag.Warning</b></div>
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal" style="margin-left: 280px;">

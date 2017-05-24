@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using KillerApp_SE.Models;
-using KillerApp_SE.SQLRepository;
 
 namespace KillerApp_SE.Controllers
 {
     public class GebruikersController : Controller
     {
         Bibliotheek bib = new Bibliotheek();
-        List<Gebruiker> gebruikers = new List<Gebruiker>();
-        List<string> gebruikerslijst = new List<string>();
-        List<string> gebruikerInfo = new List<string>();
 
         [HttpGet]
         public ActionResult GebruikerToevoegen()
@@ -28,12 +24,12 @@ namespace KillerApp_SE.Controllers
         {
             if (Session["Gebruikernaam"] != null)
             {
-                if (!string.IsNullOrEmpty(fc["Wachtwoord"].ToString()) && !string.IsNullOrEmpty(fc["Naam"].ToString()) && !string.IsNullOrEmpty(fc["Adres"].ToString()) && !string.IsNullOrEmpty(fc["Geboortedatum"].ToString()))
+                if (!string.IsNullOrEmpty(fc["Gebruikernaam"].ToString()) && !string.IsNullOrEmpty(fc["Wachtwoord"].ToString()) && !string.IsNullOrEmpty(fc["Naam"].ToString()) && !string.IsNullOrEmpty(fc["Adres"].ToString()) && !string.IsNullOrEmpty(fc["Geboortedatum"].ToString()))
                 {
                     bib.GebruikerToevoegen(fc["Gebruikernaam"], fc["Wachtwoord"], fc["Naam"], fc["Adres"], fc["Geboortedatum"]);
                     ViewBag.Message = "Gebruiker succesvol aangemaakt!";
                 }
-                else ViewBag.Warning = "Voer aub alle gegevens in.";
+                else ViewBag.Warning = "Voer alle gegevens in aub.";
                 return View();
             }
             else return RedirectToAction("Login", "Inlog");
@@ -106,6 +102,25 @@ namespace KillerApp_SE.Controllers
                     bib.VerwijderGebruiker(id);
                     return RedirectToAction("GebruikerBeheren", "Gebruikers");
                 }
+            }
+            else return RedirectToAction("Login", "Inlog");
+        }
+        [HttpGet]
+        public ActionResult RetourBoekenGebruiker(string id)
+        {
+            foreach (Boek b in bib.GetMijnBoeken(id))
+            {
+                bib.RetourBoek(id, b.Titel);
+            }
+            return RedirectToAction("GebruikerBeheren", "Gebruikers");
+        }
+        [HttpGet]
+        public ActionResult GetBoekenGebruiker(string id)
+        {
+            if (Session["Gebruikernaam"] != null)
+            {
+                ViewData["boeken"] = bib.GetMijnBoeken(id);
+                return View();
             }
             else return RedirectToAction("Login", "Inlog");
         }

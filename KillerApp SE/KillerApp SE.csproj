@@ -179,6 +179,7 @@
     <Content Include="Views\Boeken\GetBoekenLijst.cshtml" />
     <Content Include="Views\Boeken\MijnBoeken.cshtml" />
     <Content Include="Views\Boeken\ZoekBoek.cshtml" />
+    <Content Include="Views\Gebruikers\GetBoekenGebruiker.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

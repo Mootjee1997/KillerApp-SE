@@ -17,7 +17,7 @@ namespace KillerApp_SE.Controllers
             if (Request.QueryString["ZoekTitel"] != null)
             {
                 ViewData["boeken"] = bib.ZoekBoek(Request.QueryString["ZoekTitel"]);
-                ViewBag.Message = "Boeken voor zoekterm: " + Request.QueryString["ZoekTitel"];
+                ViewBag.Message = "Boeken voor zoekterm: " + "'" + Request.QueryString["ZoekTitel"] + "'";
             }
             else ViewData["boeken"] = bib.GetBoekenLijst();
             return View();
@@ -43,7 +43,7 @@ namespace KillerApp_SE.Controllers
             else
             {
                 return RedirectToAction("Login", "Inlog");
-            } 
+            }
         }
         [HttpGet]
         public ActionResult RetourBoek(string id)
@@ -57,15 +57,17 @@ namespace KillerApp_SE.Controllers
             else return RedirectToAction("Login", "Inlog");
         }
         [HttpGet]
-        public ActionResult MijnBoeken()
+        public ActionResult MijnBoeken(string id)
         {
             if (Session["Gebruikernaam"] != null)
             {
-                ViewData["boeken"] = bib.GetMijnBoeken(Session["Gebruikernaam"].ToString());
-                if (ViewData["boeken"] == null)
+                if (string.IsNullOrEmpty(id))
                 {
+                    ViewData["boeken"] = bib.GetMijnBoeken(Session["Gebruikernaam"].ToString());
                     ViewBag.Message = "Je hebt nog geen geleende boeken om te weergeven.";
+                    return View();
                 }
+                else ViewData["boeken"] = bib.GetMijnBoeken(id);
                 return View();
             }
             else return RedirectToAction("Login", "Inlog");
