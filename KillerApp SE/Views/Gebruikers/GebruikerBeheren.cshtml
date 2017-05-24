@@ -5,47 +5,57 @@
     ViewBag.Title = "GebruikerBeheren";
 }
 
-<h2 style="margin-left: 440px">Gebruikers Beheren</h2>
+<center>
+    <h2>Gebruikers Beheren</h2>
 
-<p>
-    @Html.ActionLink("Nieuwe gebruiker", "GebruikerToevoegen")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Naam)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Adres)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Geboortedatum)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th></th>
-    </tr>
+    <center>
+        <font color="Green"><b>@ViewBag.Message</b></font>
+        <font color="Red"><b>@ViewBag.Warning</b></font>
+    </center>
 
-    @foreach (var gebruiker in (List<Gebruiker>)ViewData["gebruikers"])
-    {
+    <p style="margin-left: -1020px">
+        @Html.ActionLink("Nieuwe gebruiker", "GebruikerToevoegen")
+    </p>
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => gebruiker.Naam)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => gebruiker.Adres)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => gebruiker.Geboortedatum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => gebruiker.Status)
-            </td>
-            <td>
-                @Html.ActionLink("Wijzig", "WijzigGegevens", new { id = gebruiker.Gebruikernaam }) |
-                @Html.ActionLink("Verwijder gebruiker", "VerwijderGebruiker", new { id = gebruiker.Gebruikernaam })
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.Naam)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Adres)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Geboortedatum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
         </tr>
-    }
-</table>
+
+        @foreach (var gebruiker in (List<Gebruiker>)ViewData["gebruikers"])
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => gebruiker.Naam)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => gebruiker.Adres)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => gebruiker.Geboortedatum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => gebruiker.Status)
+                </td>
+                <td>
+                    @Html.ActionLink("Wijzig", "WijzigGegevens", new { id = gebruiker.Gebruikernaam }) |
+                    @if (Session["Gebruikernaam"].ToString() != gebruiker.Gebruikernaam)
+                    {
+                        @Html.ActionLink("Verwijder gebruiker", "VerwijderGebruiker", new { id = gebruiker.Gebruikernaam })
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</center>

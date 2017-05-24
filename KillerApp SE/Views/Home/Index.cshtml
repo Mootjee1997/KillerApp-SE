@@ -1,13 +1,23 @@
 ﻿@using KillerApp_SE.Models
 @{
-    ViewBag.Title = "Index";   
+    ViewBag.Title = "Index";
 }
 @{
     Bibliotheek bib = new Bibliotheek();
 }
 
-<h2 style="margin-left: 416px;">Welkom bij iBibliotheek!</h2>
-<div id="Logo"> <img src="http://www.bibliocenter.nl/index.php?cmd=file&action=open&file=854" style="width:300px; height:300px; margin-left: 422px; margin-bottom: 15px;"/> </div> 
+<center>
+    @if (Session["Gebruikernaam"] != null)
+    {
+        <h2>Welkom bij iBibliotheek, @Session["Gebruikernaam"].ToString()!</h2>
+    }
+    else
+    {
+        <h2>Welkom bij iBibliotheek!</h2>
+    }
+</center>
+  
+<div id="Logo"> <img src="http://www.bibliocenter.nl/index.php?cmd=file&action=open&file=854" style="width:300px; height:300px; margin-left: 422px; margin-bottom: 15px;" /> </div>
 <div id="Beschrijving">
     <center>
         <p>Welkom bij de webapplicatie voor iBibliotheek!</p>

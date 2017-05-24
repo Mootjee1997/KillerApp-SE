@@ -17,6 +17,7 @@ namespace KillerApp_SE.Controllers
             if (Request.QueryString["ZoekTitel"] != null)
             {
                 ViewData["boeken"] = bib.ZoekBoek(Request.QueryString["ZoekTitel"]);
+                ViewBag.Message = "Boeken voor zoekterm: " + Request.QueryString["ZoekTitel"];
             }
             else ViewData["boeken"] = bib.GetBoekenLijst();
             return View();
@@ -24,31 +25,50 @@ namespace KillerApp_SE.Controllers
         [HttpGet]
         public ActionResult LeenBoek(string id)
         {
-            ViewData["boeken"] = bib.GetBoekenLijst();
-            foreach (Boek boek in bib.GetMijnBoeken(Session["Gebruikernaam"].ToString()))
+            if (Session["Gebruikernaam"] != null)
             {
-                if (boek.Titel == id)
+                ViewData["boeken"] = bib.GetBoekenLijst();
+                foreach (Boek boek in bib.GetMijnBoeken(Session["Gebruikernaam"].ToString()))
                 {
-                    ViewBag.Message = "Dit boek hebt u al geleend.";
-                    return View("GetBoekenLijst");
+                    if (boek.Titel == id)
+                    {
+                        ViewBag.Message = "Dit boek hebt u al geleend.";
+                        return View("GetBoekenLijst");
+                    }
                 }
+                bib.LeenBoek(Session["Gebruikernaam"].ToString(), id);
+                ViewData["boeken"] = bib.GetBoekenLijst();
+                return View("GetBoekenLijst");
             }
-            bib.LeenBoek(Session["Gebruikernaam"].ToString(), id);
-            ViewData["boeken"] = bib.GetBoekenLijst();
-            return View("GetBoekenLijst");
+            else
+            {
+                return RedirectToAction("Login", "Inlog");
+            } 
         }
         [HttpGet]
         public ActionResult RetourBoek(string id)
         {
-            bib.RetourBoek(Session["Gebruikernaam"].ToString(), id);
-            ViewData["boeken"] = bib.GetMijnBoeken(Session["Gebruikernaam"].ToString());
-            return View("MijnBoeken");
+            if (Session["Gebruikernaam"] != null)
+            {
+                bib.RetourBoek(Session["Gebruikernaam"].ToString(), id);
+                ViewData["boeken"] = bib.GetMijnBoeken(Session["Gebruikernaam"].ToString());
+                return View("MijnBoeken");
+            }
+            else return RedirectToAction("Login", "Inlog");
         }
         [HttpGet]
         public ActionResult MijnBoeken()
         {
-            ViewData["boeken"] = bib.GetMijnBoeken(Session["Gebruikernaam"].ToString());
-            return View();
+            if (Session["Gebruikernaam"] != null)
+            {
+                ViewData["boeken"] = bib.GetMijnBoeken(Session["Gebruikernaam"].ToString());
+                if (ViewData["boeken"] == null)
+                {
+                    ViewBag.Message = "Je hebt nog geen geleende boeken om te weergeven.";
+                }
+                return View();
+            }
+            else return RedirectToAction("Login", "Inlog");
         }
     }
 }

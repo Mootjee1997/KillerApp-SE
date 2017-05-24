@@ -8,7 +8,8 @@
 
 @using (Html.BeginForm())
 {
-    <div style="margin-left: 440px; color:palegreen"><b>@ViewBag.Message</b></div>
+    <div style="margin-left: 438px; color:green"><b>@ViewBag.Message</b></div>
+    <div style="margin-left: 465px; color:red"><b>@ViewBag.Warning</b></div>
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal" style="margin-left: 280px;">
@@ -60,6 +61,4 @@
         </div>
     </div>
 }
-<div style="margin-top:-44px; margin-left: 521px">
-    @Html.ActionLink("Terug naar gebruikersbeheer", "GebruikerBeheren")
-</div>
+@Html.ActionLink("Terug naar gebruikersbeheer", "GebruikerBeheren")

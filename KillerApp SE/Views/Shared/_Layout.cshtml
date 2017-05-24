@@ -16,16 +16,6 @@
 <body bgcolor="#352B2B">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            @if (Session["Gebruikernaam"] != null)
-            {
-                <ul class="nav navbar-nav navbar-right">
-                    <p style="font-size: 16px; color: white; margin-top: 15px; margin-left: -330px">
-                        <b>
-                            Ingelogd als: @Session["Gebruikernaam"]
-                        </b>
-                    </p>
-                </ul>
-            }
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
@@ -35,7 +25,14 @@
                 @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
                 @if (Session["Gebruikernaam"] != null && Session["Gebruikernaam"].ToString() != null)
                 {
-                    @Html.ActionLink("Mijn gegevens", "WijzigMijnGegevens", "Gebruikers", new { area = "" }, new { @class = "navbar-brand" })
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ingelogd als: <font color="Red">@Session["Gebruikernaam"]</font> <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>@Html.ActionLink("Mijn gegevens", "WijzigMijnGegevens", "Gebruikers", new { area = "" }, new { @class = "Elements" })</li>
+                            </ul>
+                        </li>
+                    </ul>
                 }
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
@@ -43,9 +40,9 @@
                         <ul class="dropdown-menu" role="menu">
                             @if (Session["Gebruikernaam"] != null && bib.GetStatus(Session["Gebruikernaam"].ToString()) == "Gebruiker")
                             {
-                                @Html.ActionLink("Mijn boeken", "MijnBoeken", "Boeken", new { area = "" }, new { @class = "navbar-brand" })
+                                <li>@Html.ActionLink("Mijn boeken", "MijnBoeken", "Boeken", new { area = "" }, new { @class = "Elements" })</li>
                             }
-                            @Html.ActionLink("Catalogus", "GetBoekenLijst", "Boeken", new { area = "" }, new { @class = "navbar-brand" })
+                            <li>@Html.ActionLink("Catalogus", "GetBoekenLijst", "Boeken", new { area = "" }, new { @class = "Elements" })</li>
                         </ul>
                     </li>
                 </ul>
@@ -57,8 +54,8 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gebruikers <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li>@Html.ActionLink("Gebruikersbeheer", "GebruikerBeheren", "Gebruikers", new { area = "" }, new { @class = "navbar-brand" })</li>
-                                <li>@Html.ActionLink("Gebruiker toevoegen", "GebruikerToevoegen", "Gebruikers", new { area = "" }, new { @class = "navbar-brand" })</li>
+                                <li>@Html.ActionLink("Gebruikersbeheer", "GebruikerBeheren", "Gebruikers", new { area = "" }, new { @class = "Elements" })</li>
+                                <li>@Html.ActionLink("Gebruiker toevoegen", "GebruikerToevoegen", "Gebruikers", new { area = "" }, new { @class = "Elements" })</li>
                             </ul>
                         </li>
                     </ul>

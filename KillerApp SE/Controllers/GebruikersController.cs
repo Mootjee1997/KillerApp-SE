@@ -13,60 +13,101 @@ namespace KillerApp_SE.Controllers
         List<Gebruiker> gebruikers = new List<Gebruiker>();
         List<string> gebruikerslijst = new List<string>();
         List<string> gebruikerInfo = new List<string>();
-        //
+
         [HttpGet]
         public ActionResult GebruikerToevoegen()
         {
-            return View();
+            if (Session["Gebruikernaam"] != null)
+            {
+                return View();
+            }
+            else return RedirectToAction("Login", "Inlog");
         }
-        //
         [HttpPost]
         public ActionResult GebruikerToevoegen(FormCollection fc)
         {
-            bib.GebruikerToevoegen(fc["Gebruikernaam"], fc["Wachtwoord"], fc["Naam"], fc["Adres"], fc["Geboortedatum"]);
-            if (bib.Zoekgebruiker(fc["Gebruikernaam"]) != null)
+            if (Session["Gebruikernaam"] != null)
             {
-                ViewBag.Message = "Gebruiker succesvol aangemaakt!";
+                if (!string.IsNullOrEmpty(fc["Wachtwoord"].ToString()) && !string.IsNullOrEmpty(fc["Naam"].ToString()) && !string.IsNullOrEmpty(fc["Adres"].ToString()) && !string.IsNullOrEmpty(fc["Geboortedatum"].ToString()))
+                {
+                    bib.GebruikerToevoegen(fc["Gebruikernaam"], fc["Wachtwoord"], fc["Naam"], fc["Adres"], fc["Geboortedatum"]);
+                    ViewBag.Message = "Gebruiker succesvol aangemaakt!";
+                }
+                else ViewBag.Warning = "Voer aub alle gegevens in.";
+                return View();
             }
-            return View();
+            else return RedirectToAction("Login", "Inlog");
         }
-        //
         [HttpGet]
         public ActionResult WijzigMijnGegevens()
         {
-            return View(bib.Zoekgebruiker(Session["Gebruikernaam"].ToString()));
+            if (Session["Gebruikernaam"] != null)
+            {
+                return View(bib.Zoekgebruiker(Session["Gebruikernaam"].ToString()));
+            }
+            else return RedirectToAction("Login", "Inlog");
         }
-        //
         [HttpPost]
         public ActionResult WijzigMijnGegevens(FormCollection fc)
         {
-            bib.WijzigGegevens(Session["Gebruikernaam"].ToString(), fc["Naam"], fc["Adres"], fc["Geboortedatum"], fc["Wachtwoord"]);
-            ViewBag.Message = "Uw gegevens zijn succesvol gewijzigd.";
-            return View(bib.Zoekgebruiker(Session["Gebruikernaam"].ToString()));
+            if (Session["Gebruikernaam"] != null)
+            {
+                bib.WijzigGegevens(Session["Gebruikernaam"].ToString(), fc["Naam"], fc["Adres"], fc["Geboortedatum"], fc["Wachtwoord"]);
+                ViewBag.Message = "Uw gegevens zijn succesvol gewijzigd.";
+                return View(bib.Zoekgebruiker(Session["Gebruikernaam"].ToString()));
+            }
+            else return RedirectToAction("Login", "Inlog");
         }
-        //
         [HttpGet]
-        public ActionResult GebruikerBeheren()
+        public ActionResult GebruikerBeheren(string id)
         {
-            ViewData["gebruikers"] = bib.GetGebruikersLijst();
-            return View();
+            if (Session["Gebruikernaam"] != null)
+            {
+                ViewData["gebruikers"] = bib.GetGebruikersLijst();
+                if (id == "Error1")
+                {
+                    ViewBag.Warning = "Gebruiker heeft nog boeken! Retourneer de boeken om door te gaan."; 
+                }
+                return View();
+            }
+            else return RedirectToAction("Login", "Inlog");
         }
         [HttpGet]
         public ActionResult WijzigGegevens(string id)
         {
-            return View(bib.Zoekgebruiker(id));
+            if (Session["Gebruikernaam"] != null)
+            {
+                return View(bib.Zoekgebruiker(id));
+            }
+            else return RedirectToAction("Login", "Inlog");
         }
         [HttpPost]
         public ActionResult WijzigGegevens(FormCollection fc, string id)
         {
-            bib.WijzigGegevens(id, fc["Naam"], fc["Adres"], fc["Geboortedatum"], fc["Wachtwoord"]);
-            ViewBag.Message = "Gegevens zijn succesvol gewijzigd.";
-            return View(bib.Zoekgebruiker(id));
+            if (Session["Gebruikernaam"] != null)
+            {
+                bib.WijzigGegevens(id, fc["Naam"], fc["Adres"], fc["Geboortedatum"], fc["Wachtwoord"]);
+                ViewBag.Message = "Gegevens zijn succesvol gewijzigd.";
+                return View(bib.Zoekgebruiker(id));
+            }
+            else return RedirectToAction("Login", "Inlog");
         }
         [HttpGet]
-        public void VerwijderGebruiker(string id)
+        public ActionResult VerwijderGebruiker(string id)
         {
-            bib.VerwijderGebruiker(id);
+            if (Session["Gebruikernaam"] != null)
+            {
+                if (bib.GetMijnBoeken(id).Count > 0)
+                {
+                    return RedirectToAction("GebruikerBeheren", "Gebruikers", new { id = "Error1"});
+                }
+                else
+                {
+                    bib.VerwijderGebruiker(id);
+                    return RedirectToAction("GebruikerBeheren", "Gebruikers");
+                }
+            }
+            else return RedirectToAction("Login", "Inlog");
         }
     }
 }
