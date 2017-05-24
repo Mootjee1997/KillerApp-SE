@@ -12,14 +12,13 @@ namespace KillerApp_SE.Controllers
         Bibliotheek bib = new Bibliotheek();
 
         [HttpGet]
-        public ActionResult GetBoekenLijst()
-        {
-            ViewData["boeken"] = bib.GetBoekenLijst();
-            return View();
-        }
-        [HttpPost]
         public ActionResult GetBoekenLijst(FormCollection fc)
         {
+            if (Request.QueryString["ZoekTitel"] != null)
+            {
+                ViewData["boeken"] = bib.ZoekBoek(Request.QueryString["ZoekTitel"]);
+            }
+            else ViewData["boeken"] = bib.GetBoekenLijst();
             return View();
         }
         [HttpGet]
