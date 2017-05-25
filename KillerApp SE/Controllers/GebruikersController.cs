@@ -17,7 +17,7 @@ namespace KillerApp_SE.Controllers
             {
                 return View();
             }
-            else return RedirectToAction("Login", "Inlog");
+            else return RedirectToAction("Login", "Home");
         }
         [HttpPost]
         public ActionResult GebruikerToevoegen(FormCollection fc)
@@ -32,27 +32,7 @@ namespace KillerApp_SE.Controllers
                 else ViewBag.Warning = "Voer alle gegevens in aub.";
                 return View();
             }
-            else return RedirectToAction("Login", "Inlog");
-        }
-        [HttpGet]
-        public ActionResult WijzigMijnGegevens()
-        {
-            if (Session["Gebruikernaam"] != null)
-            {
-                return View(bib.Zoekgebruiker(Session["Gebruikernaam"].ToString()));
-            }
-            else return RedirectToAction("Login", "Inlog");
-        }
-        [HttpPost]
-        public ActionResult WijzigMijnGegevens(FormCollection fc)
-        {
-            if (Session["Gebruikernaam"] != null)
-            {
-                bib.WijzigGegevens(Session["Gebruikernaam"].ToString(), fc["Naam"], fc["Adres"], fc["Geboortedatum"], fc["Wachtwoord"]);
-                ViewBag.Message = "Uw gegevens zijn succesvol gewijzigd.";
-                return View(bib.Zoekgebruiker(Session["Gebruikernaam"].ToString()));
-            }
-            else return RedirectToAction("Login", "Inlog");
+            else return RedirectToAction("Login", "Home");
         }
         [HttpGet]
         public ActionResult GebruikerBeheren(string id)
@@ -66,27 +46,40 @@ namespace KillerApp_SE.Controllers
                 }
                 return View();
             }
-            else return RedirectToAction("Login", "Inlog");
+            else return RedirectToAction("Login", "Home");
         }
         [HttpGet]
         public ActionResult WijzigGegevens(string id)
         {
             if (Session["Gebruikernaam"] != null)
             {
-                return View(bib.Zoekgebruiker(id));
+                if (id != null)
+                {
+                    return View(bib.Zoekgebruiker(id));
+                }
+                else return View(bib.Zoekgebruiker(Session["Gebruikernaam"].ToString()));
             }
-            else return RedirectToAction("Login", "Inlog");
+            else return RedirectToAction("Login", "Home");
         }
         [HttpPost]
         public ActionResult WijzigGegevens(FormCollection fc, string id)
         {
             if (Session["Gebruikernaam"] != null)
             {
-                bib.WijzigGegevens(id, fc["Naam"], fc["Adres"], fc["Geboortedatum"], fc["Wachtwoord"]);
-                ViewBag.Message = "Gegevens zijn succesvol gewijzigd.";
-                return View(bib.Zoekgebruiker(id));
+                if (id != null)
+                {
+                    bib.WijzigGegevens(id, fc["Naam"], fc["Adres"], fc["Geboortedatum"], fc["Wachtwoord"]);
+                    ViewBag.Message = "Gegevens zijn succesvol gewijzigd.";
+                    return View(bib.Zoekgebruiker(id));
+                }
+                else
+                {
+                    bib.WijzigGegevens(Session["Gebruikernaam"].ToString(), fc["Naam"], fc["Adres"], fc["Geboortedatum"], fc["Wachtwoord"]);
+                    ViewBag.Message = "Uw gegevens zijn succesvol gewijzigd.";
+                    return View(bib.Zoekgebruiker(Session["Gebruikernaam"].ToString()));
+                }
             }
-            else return RedirectToAction("Login", "Inlog");
+            else return RedirectToAction("Login", "Home");
         }
         [HttpGet]
         public ActionResult VerwijderGebruiker(string id)
@@ -103,7 +96,7 @@ namespace KillerApp_SE.Controllers
                     return RedirectToAction("GebruikerBeheren", "Gebruikers");
                 }
             }
-            else return RedirectToAction("Login", "Inlog");
+            else return RedirectToAction("Login", "Home");
         }
         [HttpGet]
         public ActionResult RetourBoekenGebruiker(string id)
@@ -113,16 +106,6 @@ namespace KillerApp_SE.Controllers
                 bib.RetourBoek(id, b.Titel);
             }
             return RedirectToAction("GebruikerBeheren", "Gebruikers");
-        }
-        [HttpGet]
-        public ActionResult GetBoekenGebruiker(string id)
-        {
-            if (Session["Gebruikernaam"] != null)
-            {
-                ViewData["boeken"] = bib.GetMijnBoeken(id);
-                return View();
-            }
-            else return RedirectToAction("Login", "Inlog");
         }
     }
 }

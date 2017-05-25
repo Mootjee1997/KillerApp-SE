@@ -9,7 +9,7 @@
 <center>
     @if (Session["Gebruikernaam"] != null)
     {
-        <h2>Welkom bij iBibliotheek, @Session["Gebruikernaam"].ToString()!</h2>
+        <h2>Welkom bij iBibliotheek, @bib.GetNaam(Session["Gebruikernaam"].ToString())!</h2>
     }
     else
     {
@@ -24,6 +24,6 @@
         <p>Met behulp van deze applicatie kun je zelf bepalen welke boeken je wilt lenen of terug wilt brengen,</p>
         <p>ook kun je binnen de catalogus zoeken naar de boeken die bij ons beschikbaar zijn.</p>
         <p>Nog geen account? Meld je bij een van de medewerkers om je te laten registreren.</p>
-        <p>Heb je al een account? Log dan @Html.ActionLink("hier", "Login", "Inlog") in</p>
+        <p>Heb je al een account? Log dan @Html.ActionLink("hier", "Login", "Home") in</p>
     </center>
 </div>

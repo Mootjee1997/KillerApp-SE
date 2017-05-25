@@ -44,7 +44,7 @@
                 @Html.DisplayFor(modelItem => boek.Uitgever)
             </td>
             <td>
-                @Html.ActionLink("Breng terug", "RetourBoek", new { id = boek.Titel }) <br />
+                @Html.ActionLink("Breng terug", "RetourBoek", new { id = boek.Titel, gebruiker = ViewBag.Gebruiker }) <br />
             </td>
         </tr>
     }

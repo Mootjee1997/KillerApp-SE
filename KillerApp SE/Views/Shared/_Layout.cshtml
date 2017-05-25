@@ -36,7 +36,7 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ingelogd als: <font color="#01DF01">@bib.GetNaam(Session["Gebruikernaam"].ToString())</font> <span class="caret"></span></a>
                             }                         
                             <ul class="dropdown-menu" role="menu">
-                                <li>@Html.ActionLink("Mijn gegevens", "WijzigMijnGegevens", "Gebruikers", new { area = "" }, new { @class = "Elements" })</li>
+                                <li>@Html.ActionLink("Mijn gegevens", "WijzigGegevens", "Gebruikers", new { area = "" }, new { @class = "Elements" })</li>
                             </ul>
                         </li>
                     </ul>
@@ -70,11 +70,11 @@
                 <ul class="nav navbar-nav navbar-right">
                     @if (Session["Gebruikernaam"] == null)
                     {
-                        @Html.ActionLink("Login", "Login", "Inlog", new { area = "" }, new { @class = "navbar-brand" })
+                        @Html.ActionLink("Login", "Login", "Home", new { area = "" }, new { @class = "navbar-brand" })
                     }
                     else
                     {
-                        @Html.ActionLink("Logout", "Logout", "Inlog", new { area = "" }, new { @class = "navbar-brand" })
+                        @Html.ActionLink("Logout", "Logout", "Home", new { area = "" }, new { @class = "navbar-brand" })
                     }
                 </ul>
             </div>
