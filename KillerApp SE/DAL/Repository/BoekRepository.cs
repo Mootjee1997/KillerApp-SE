@@ -20,17 +20,15 @@ namespace KillerApp_SE.SQLRepository
         {
             return bpers.GetMijnBoeken(gebruikernaam);
         }
-        public void LeenBoek(string gebruikernaam, string titel)
+        public void LeenBoek(string gebruikernaam, Boek  boek)
         {
-            bpers.LeenBoek(gebruikernaam, titel);
-        }
-        public void RetourBoek(string gebruikernaam, string titel)
+            bpers.LeenBoek(gebruikernaam, boek);
+            bpers.UpdateBoek(boek);
+        }      
+        public void RetourBoek(string gebruikernaam, Boek boek)
         {
-            bpers.RetourBoek(gebruikernaam, titel);
-        }
-        public void UpdateBoek(string titel)
-        {
-            bpers.UpdateBoek(titel);
+            bpers.RetourBoek(gebruikernaam, boek);
+            bpers.UpdateBoek(boek);
         }
     }
 }

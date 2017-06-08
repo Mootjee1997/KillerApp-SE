@@ -3,127 +3,74 @@ using KillerApp_SE.SQLRepository;
 
 namespace KillerApp_SE.Models
 {
-    public class Bibliotheek
+    public static class Bibliotheek
     {
-        GebruikerRepository grep = new GebruikerRepository();
-        BoekRepository brep = new BoekRepository();
-        public List<Gebruiker> gebruikers = new List<Gebruiker>();
-        public List<Boek> boeken = new List<Boek>();
-
-        //Zoekt binnen de geleende boekenlijst van een gebruiker naar zijn boeken en geeft aan of de titel erin voorkomt
-        public bool ZoekMijnBoekenLijst(string gebruikernaam, string titel)
-        {
-            foreach (Boek b in GetMijnBoeken(gebruikernaam))
-            {
-                if (b.Titel == titel)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-        //Haalt de status van een gebruiker op, mogelijke statussen zijn: "Admin" en "Gebruiker"
-        public string GetStatus(string gebruikernaam)
-        {
-            GetGebruikersLijst();
-            foreach (Gebruiker g in gebruikers)
-            {
-                if (g.Gebruikernaam == gebruikernaam)
-                {
-                    return g.Status;
-                }
-            }
-            return null;
-        }
-        //Haalt de naam van een gebruiker op
-        public string GetNaam(string gebruikernaam)
-        {
-            GetGebruikersLijst();
-            foreach (Gebruiker g in gebruikers)
-            {
-                if (g.Gebruikernaam == gebruikernaam)
-                {
-                    return g.Naam;
-                }
-            }
-            return null;
-        }
-        //Zoekt naar boeken binnen de boekenlijst die voldoen aan de zoekterm
-        public List<Boek> ZoekBoek(string titel)
+        //Zoekt naar boeken binnen de boekenlijst die voldoen aan de gegeven zoekterm
+        public static List<Boek> ZoekBoek(string titel)
         {
             return brep.ZoekBoek(titel);
         }
-        //Zoekt naar een gebruiker binnen de gebruikerslijst en haalt de model daarvan op
-        public Gebruiker Zoekgebruiker(string gebruikernaam)
+        //Zoekt binnen de boekenlijst van een gebruiker naar een bepaalde titel
+        public static bool CheckMijnLijst(string gebruikernaam, string titel)
         {
-            GetGebruikersLijst();
-            foreach (Gebruiker g in gebruikers)
-            {
-                if (g.Gebruikernaam == gebruikernaam)
-                {
-                    return g;
-                }
-            }
+            foreach (Boek b in GetGebruiker(gebruikernaam).Boeken) if (b.Titel == titel) return true;
+            return false;
+        }
+        //Zoekt naar een gebruiker binnen de gebruikerslijst en haalt de model daarvan op
+        public static Gebruiker GetGebruiker(string gebruikernaam)
+        {
+            foreach (Gebruiker g in gebruikers) if (g.Gebruikernaam == gebruikernaam) return g;
             return null;
         }
-        //Verwijdert een gebruiker uit de gebruikerslijst
-        public void VerwijderGebruiker(string gebruikernaam)
+        //Zoekt naar een boek binnen de boekenlijst en haalt de model daarvan op
+        public static Boek GetBoek(string titel)
         {
-            GetGebruikersLijst();
-            foreach (Gebruiker g in gebruikers)
-            {
-                if (g.Gebruikernaam == gebruikernaam)
-                {
-                    grep.GebruikerVerwijderen(gebruikernaam); grep.GetGebruikersLijst();
-                }
-            }
+            foreach (Boek b in boeken) if (b.Titel == titel) return b;
+            return null;
         }
         //Methode voor het inloggen
-        public bool Login(string gebruikernaam, string wachtwoord)
+        public static bool Login(string gebruikernaam, string wachtwoord)
         {
             return grep.Login(gebruikernaam, wachtwoord);
         }
         //Gebruiker toevoegen aan de gebruikerslijst, standaard status: 'Gebruiker'
-        public void GebruikerToevoegen(string gebruikernaam, string wachtwoord, string naam, string adres, string geboortedatum)
+        public static void GebruikerToevoegen(Gebruiker gebruiker)
         {
-            grep.GebruikerToevoegen(gebruikernaam, wachtwoord, naam, adres, geboortedatum, "Gebruiker"); grep.GetGebruikersLijst();
+            gebruikers.Add(gebruiker);
+            grep.GebruikerToevoegen(gebruiker);
+        }
+        //Verwijdert een gebruiker uit de gebruikerslijst
+        public static void VerwijderGebruiker(string gebruikernaam)
+        {
+            gebruikers.Remove(GetGebruiker(gebruikernaam));
+            grep.GebruikerVerwijderen(gebruikernaam);
         }
         //Gegevens van een gebruiker wijzigen
-        public void WijzigGegevens(string gebruikernaam, string naam, string adres, string geboortedatum, string wachtwoord)
+        public static void WijzigGegevens(string gebruikernaam, string naam, string adres, string geboortedatum, string wachtwoord)
         {
-            grep.WijzigGegevens(gebruikernaam, naam, adres, geboortedatum, wachtwoord); grep.GetGebruikersLijst();
+            Gebruiker gebruiker = GetGebruiker(gebruikernaam);
+            gebruiker.Naam = naam;
+            gebruiker.Adres = adres;
+            gebruiker.Geboortedatum = geboortedatum;
+            gebruiker.Wachtwoord = wachtwoord;
+            grep.WijzigGegevens(gebruiker);
         }
-        //Methode voor het lenen van een boek door een gebruiker, lenen is maar 1 x mogelijk per boek
-        public void LeenBoek(string gebruikernaam, string titel)
+        //Haalt de lijst van gebruikers en bijbeborende boeken op uit de database
+        public static void GetGebruikersLijst()
         {
-            GetBoekenLijst();
-            foreach (Boek boek in boeken)
-            {
-                if (boek.Titel == titel && boek.AantalBeschikbaar > 0)
-                {
-                    brep.LeenBoek(gebruikernaam, titel); brep.UpdateBoek(titel);
-                }
-            }
-        }
-        //Boek retourneren
-        public void RetourBoek(string gebruikernaam, string titel)
-        {
-            brep.RetourBoek(gebruikernaam, titel);
-        }
-        //Haalt de lijst van gebruikers op uit de database
-        public List<Gebruiker> GetGebruikersLijst()
-        {
-            return gebruikers = grep.GetGebruikersLijst();
+            gebruikers = grep.GetGebruikersLijst();
+            foreach (Gebruiker g in gebruikers) g.Boeken = brep.GetMijnBoeken(g.Gebruikernaam);
         }
         //Haalt de lijst van boeken op uit de database
-        public List<Boek> GetBoekenLijst()
+        public static void GetBoekenLijst()
         {
-            return boeken = brep.GetBoekenlijst();
+            boeken = brep.GetBoekenlijst();
         }
-        //Haalt de lijst met boeken op die op een specifieke gebruiker zijn naam staan
-        public List<Boek> GetMijnBoeken(string gebruikernaam)
-        {
-            return brep.GetMijnBoeken(gebruikernaam);
-        }
+        public static List<Gebruiker> Gebruikers { get { return gebruikers; } set { gebruikers = value; } }
+        public static List<Boek> Boeken { get { return boeken; } set { boeken = value; } }
+        private static List<Gebruiker> gebruikers = new List<Gebruiker>();
+        private static List<Boek> boeken = new List<Boek>();
+        public static GebruikerRepository grep = new GebruikerRepository();
+        public static BoekRepository brep = new BoekRepository();
     }
 }

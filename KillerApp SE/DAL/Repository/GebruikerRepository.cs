@@ -16,17 +16,17 @@ namespace KillerApp_SE.SQLRepository
         {
             return gpers.GetGebruikersLijst();
         }
-        public void GebruikerToevoegen(string gebruikersnaam, string wachtwoord, string naam, string adres, string geboortedatum, string status)
+        public void GebruikerToevoegen(Gebruiker gebruiker)
         {
-            gpers.GebruikerToevoegen(gebruikersnaam, wachtwoord, naam, adres, geboortedatum, "Gebruiker");
+            gpers.GebruikerToevoegen(gebruiker);
         }
         public void GebruikerVerwijderen(string gebruikersnaam)
         {
             gpers.GebruikerVerwijderen(gebruikersnaam);
         }
-        public void WijzigGegevens(string gebruikernaam, string naam, string adres, string geboortedatum, string wachtwoord)
+        public void WijzigGegevens(Gebruiker gebruiker)
         {
-            gpers.WijzigGegevens(gebruikernaam, naam, adres, geboortedatum, wachtwoord);
+            gpers.WijzigGegevens(gebruiker);
         }
     }
 }

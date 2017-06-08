@@ -7,39 +7,45 @@ namespace KillerApp_SE.Models
 {
     public class Boek
     {
-        private string auteur;
-        private string uitgever;
+        private Auteur auteur;
+        private Uitgever uitgever;
         private string titel;
         private string genre;
         private int aantalBeschikbaar;
         private int aantalExemplaren;
-        
-        public string Auteur
+
+        public Auteur Auteur
         {
-            get { return auteur; } set { auteur = value; }
+            get { return auteur; }
+            set { auteur = value; }
         }
-        public string Uitgever
+        public Uitgever Uitgever
         {
-            get { return uitgever; } set { uitgever = value; }
+            get { return uitgever; }
+            set { uitgever = value; }
         }
         public string Titel
         {
-            get { return titel; } set { titel = value; }
+            get { return titel; }
+            set { titel = value; }
         }
         public string Genre
         {
-            get { return genre; } set { genre = value; }
+            get { return genre; }
+            set { genre = value; }
         }
         public int AantalExemplaren
         {
-            get { return aantalExemplaren; } set { aantalExemplaren = value; }
+            get { return aantalExemplaren; }
+            set { aantalExemplaren = value; }
         }
         public int AantalBeschikbaar
         {
-            get { return aantalBeschikbaar; } set { aantalBeschikbaar = value; }
+            get { return aantalBeschikbaar; }
+            set { aantalBeschikbaar = value; }
         }
 
-        public Boek(string auteur, string uitgever, string titel, string genre, int aantalBeschikbaar, int aantalExemplaren)
+        public Boek(Auteur auteur, Uitgever uitgever, string titel, string genre, int aantalBeschikbaar, int aantalExemplaren)
         {
             this.auteur = auteur;
             this.uitgever = uitgever;

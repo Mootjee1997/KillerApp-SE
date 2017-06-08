@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
+using KillerApp_SE.SQLRepository;
 
 namespace KillerApp_SE.Models
 {
@@ -15,21 +13,50 @@ namespace KillerApp_SE.Models
 
         public List<Boek> Boeken
         {
-            get { return boeken; } set { boeken = value; }
+            get { return boeken; }
+            set { boeken = value; }
         }
         public string Gebruikernaam
         {
-            get { return gebruikernaam; } set { gebruikernaam = value; }
+            get { return gebruikernaam; }
+            set { gebruikernaam = value; }
         }
         public string Wachtwoord
         {
-            get { return wachtwoord; } set { wachtwoord = value; }
+            get { return wachtwoord; }
+            set { wachtwoord = value; }
         }
         public string Geboortedatum
         {
-            get { return geboortedatum; } set { geboortedatum = value; }
+            get { return geboortedatum; }
+            set { geboortedatum = value; }
         }
-        public string Status { get { return status; } }
+        public string Status
+        {
+            get { return status; }
+        }
+
+        public void LeenBoek(Boek boek)
+        {
+            if (boek.AantalBeschikbaar > 0)
+            {
+                boek.AantalBeschikbaar -= 1;
+                this.boeken.Add(boek);
+                Bibliotheek.brep.LeenBoek(this.gebruikernaam, boek);
+            }
+        }
+        public void RetourBoek(Boek boek)
+        {
+            Boek bk = null;
+            boek.AantalBeschikbaar += 1;
+            foreach (Boek b in boeken)
+            {
+                if (b.Titel == boek.Titel) bk = b;
+            }
+            boeken.Remove(bk);
+            //this.boeken.Remove(boek);
+            Bibliotheek.brep.RetourBoek(this.gebruikernaam, boek);
+        }
 
         public Gebruiker(string gebruikernaam, string wachtwoord, string naam, string adres, string geboortedatum, string status) : base(naam, adres)
         {

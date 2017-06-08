@@ -5,20 +5,19 @@ namespace KillerApp_SE.Controllers
 {
     public class BoekenController : Controller
     {
-        Bibliotheek bib = new Bibliotheek();
-
         //Haalt de boekenlijst op
         [HttpGet]
         public ActionResult GetBoekenLijst(FormCollection fc)
         {
+            Bibliotheek.GetBoekenLijst();
             //Kijkt of er een zoektitel is waar op gefilterd moet worden
             if (Request.QueryString["ZoekTitel"] != null)
             {
-                ViewData["boeken"] = bib.ZoekBoek(Request.QueryString["ZoekTitel"]);
+                ViewData["boeken"] = Bibliotheek.ZoekBoek(Request.QueryString["ZoekTitel"]);
                 ViewBag.Message = "Boeken voor zoekterm: " + "'" + Request.QueryString["ZoekTitel"] + "'";
             }
             //Als er geen zoekfilter is geeft die de volledige boekenlijst weer
-            else ViewData["boeken"] = bib.GetBoekenLijst();
+            else ViewData["boeken"] = Bibliotheek.Boeken;
             return View();
         }
         //Methode voor het lenen van een boek
@@ -27,20 +26,14 @@ namespace KillerApp_SE.Controllers
         {
             if (Session["Gebruikernaam"] != null)
             {
-                //Kijkt of het boek al in je lijst met boeken zit, je mag boeken maar 1 x tegelijk lenen
-                if (bib.ZoekMijnBoekenLijst(Session["Gebruikernaam"].ToString(), id) == false)
+                if (!Bibliotheek.GetGebruiker(Session["Gebruikernaam"].ToString()).Boeken.Contains(Bibliotheek.GetBoek(id)))
                 {
-                    bib.LeenBoek(Session["Gebruikernaam"].ToString(), id);
-                    ViewData["boeken"] = bib.GetBoekenLijst();
-                    return View("GetBoekenLijst");
+                    Bibliotheek.GetGebruiker(Session["Gebruikernaam"].ToString()).LeenBoek(Bibliotheek.GetBoek(id));
                 }
-                ViewData["boeken"] = bib.GetBoekenLijst();
+                ViewData["boeken"] = Bibliotheek.Boeken;
                 return View("GetBoekenLijst");
             }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            else return RedirectToAction("Login", "Home");          
         }
         //Retourneren van boeken
         [HttpGet]
@@ -50,14 +43,16 @@ namespace KillerApp_SE.Controllers
             {
                 if (gebruiker == null)
                 {
-                    bib.RetourBoek(Session["Gebruikernaam"].ToString(), id);
-                    ViewData["boeken"] = bib.GetMijnBoeken(Session["Gebruikernaam"].ToString());
+                    ViewBag.Title = "Mijn boeken";
+                    Bibliotheek.GetGebruiker(Session["Gebruikernaam"].ToString()).RetourBoek(Bibliotheek.GetBoek(id));
+                    ViewData["boeken"] = Bibliotheek.GetGebruiker(Session["Gebruikernaam"].ToString()).Boeken;
                     return View("MijnBoeken");
                 }
                 else
                 {
-                    bib.RetourBoek(gebruiker, id);
-                    ViewData["boeken"] = bib.GetMijnBoeken(gebruiker);
+                    ViewBag.Title = Bibliotheek.GetGebruiker(gebruiker).Naam + "'s " + "boeken";
+                    Bibliotheek.GetGebruiker(gebruiker).RetourBoek(Bibliotheek.GetBoek(id));
+                    ViewData["boeken"] = Bibliotheek.GetGebruiker(gebruiker).Boeken;
                     return View("MijnBoeken");
                 }
             }
@@ -71,12 +66,14 @@ namespace KillerApp_SE.Controllers
             {
                 if (id == null)
                 {
-                    ViewData["boeken"] = bib.GetMijnBoeken(Session["Gebruikernaam"].ToString());
+                    ViewBag.Title = "Mijn boeken";
+                    ViewData["boeken"] = Bibliotheek.GetGebruiker(Session["Gebruikernaam"].ToString()).Boeken;
                     return View();
                 }
                 else
                 {
-                    ViewData["boeken"] = bib.GetMijnBoeken(id);
+                    ViewBag.Title = Bibliotheek.GetGebruiker(id).Naam + "'s " + "boeken";
+                    ViewData["boeken"] = Bibliotheek.GetGebruiker(id).Boeken;
                     ViewBag.Gebruiker = id;
                     return View();
                 }

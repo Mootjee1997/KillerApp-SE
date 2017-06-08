@@ -5,10 +5,6 @@
     ViewBag.Title = "GetBoekenLijst";
 }
 
-@{
-    Bibliotheek bib = new Bibliotheek();
-}
-
 <center>
     <h2>Catalogus</h2>
     <div style="color:red"><b>@ViewBag.Message</b></div>
@@ -39,15 +35,15 @@
                 @Html.DisplayNameFor(model => model.AantalExemplaren)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Auteur)
+                @Html.DisplayNameFor(model => model.Auteur.Naam)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Uitgever)
+                @Html.DisplayNameFor(model => model.Uitgever.Naam)
             </th>
             <th></th>
         </tr>
 
-        @foreach (var boek in (List<Boek>)ViewData["boeken"])
+        @foreach (var boek in ViewData["Boeken"] as List<Boek>)
         {
             <tr>
                 <td>
@@ -63,17 +59,17 @@
                     @Html.DisplayFor(modelItem => boek.AantalExemplaren)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => boek.Auteur)
+                    @Html.DisplayFor(modelItem => boek.Auteur.Naam)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => boek.Uitgever)
+                    @Html.DisplayFor(modelItem => boek.Uitgever.Naam)
                 </td>
                 <td>
                     @if (Session["Gebruikernaam"] != null)
                     {
-                        if (bib.GetStatus(Session["Gebruikernaam"].ToString()) == "Gebruiker")
+                        if (Bibliotheek.GetGebruiker(Session["Gebruikernaam"].ToString()).Status == "Gebruiker")
                         {
-                            if (bib.ZoekMijnBoekenLijst(Session["Gebruikernaam"].ToString(), boek.Titel) == false)
+                            if (Bibliotheek.CheckMijnLijst(Session["Gebruikernaam"].ToString(), boek.Titel) == false)
                             {
                                 if (boek.AantalBeschikbaar > 0)
                                 {
@@ -81,17 +77,17 @@
                                 }
                             }
                         }
-                        if (bib.GetStatus(Session["Gebruikernaam"].ToString()) == "Admin" && boek.AantalBeschikbaar < boek.AantalExemplaren)
+                        if (Bibliotheek.GetGebruiker(Session["Gebruikernaam"].ToString()).Status == "Admin" && boek.AantalBeschikbaar < boek.AantalExemplaren)
                         {
                             <div class="btn-group">
                                 <a href="#" class="btn btn-default">Geleend door</a>
                                 <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    @foreach (Gebruiker g in bib.GetGebruikersLijst())
+                                    @foreach (Gebruiker g in Bibliotheek.Gebruikers)
                                     {
-                                        if (bib.ZoekMijnBoekenLijst(g.Gebruikernaam, boek.Titel) == true)
+                                        if (Bibliotheek.CheckMijnLijst(g.Gebruikernaam, boek.Titel) == true)
                                         {
-                                            <li>@Html.ActionLink(g.Naam, "WijzigGegevens", "Gebruikers", new { id = g.Gebruikernaam }, new { controller = "Gebruikers" })</li>
+                                            <li>@Html.ActionLink(g.Naam, "MijnBoeken", new { id = g.Gebruikernaam })</li>
                                         }
                                     }
                                 </ul>

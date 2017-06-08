@@ -2,14 +2,11 @@
 @{
     ViewBag.Title = "Index";
 }
-@{
-    Bibliotheek bib = new Bibliotheek();
-}
 
 <center>
     @if (Session["Gebruikernaam"] != null)
     {
-        <h2>Welkom bij iBibliotheek, @bib.GetNaam(Session["Gebruikernaam"].ToString())!</h2>
+        <h2>Welkom bij iBibliotheek, @Bibliotheek.GetGebruiker(Session["Gebruikernaam"].ToString()).Naam!</h2>
     }
     else
     {

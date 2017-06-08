@@ -11,16 +11,18 @@ namespace KillerApp_SE.Models
 
         public string Naam
         {
-            get { return naam; } set { naam = value; }
+            get { return naam; }
+            set { naam = value; }
         }
         public string Adres
         {
-            get { return adres; } set { adres = value; }
+            get { return adres; }
+            set { adres = value; }
         }
-
         public Persoon(string naam, string adres)
         {
-            this.naam = naam; this.adres = adres;
+            this.naam = naam;
+            this.adres = adres;
         }
 
         public override string ToString()

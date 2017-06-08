@@ -1,15 +1,7 @@
 ﻿@model KillerApp_SE.Models.Boek
 @using KillerApp_SE.Models
 
-@{
-    ViewBag.Title = "MijnBoeken";
-}
-
-@{
-    Bibliotheek bib = new Bibliotheek();
-}
-
-<center><h2>Mijn boeken</h2></center>
+<center><h2>@ViewBag.Title</h2></center>
 <center><div style="color:green"><b>@ViewBag.Message</b></div></center>
 <table class="table">
     <tr>
@@ -20,15 +12,15 @@
             @Html.DisplayNameFor(model => model.Genre)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Auteur)
+            @Html.DisplayNameFor(model => model.Auteur.Naam)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Uitgever)
+            @Html.DisplayNameFor(model => model.Uitgever.Naam)
         </th>
         <th></th>
     </tr>
 
-    @foreach (var boek in (List<Boek>)ViewData["boeken"])
+    @foreach (var boek in ViewData["Boeken"] as List<Boek>)
     {
         <tr>
             <td>
@@ -38,14 +30,17 @@
                 @Html.DisplayFor(modelItem => boek.Genre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => boek.Auteur)
+                @Html.DisplayFor(modelItem => boek.Auteur.Naam)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => boek.Uitgever)
+                @Html.DisplayFor(modelItem => boek.Uitgever.Naam)
             </td>
-            <td>
-                @Html.ActionLink("Breng terug", "RetourBoek", new { id = boek.Titel, gebruiker = ViewBag.Gebruiker }) <br />
-            </td>
+            @if (Bibliotheek.GetGebruiker(Session["Gebruikernaam"].ToString()).Status != "Admin")
+            {
+                <td>
+                    @Html.ActionLink("Breng terug", "RetourBoek", new { id = boek.Titel, gebruiker = ViewBag.Gebruiker }) <br />
+                </td>
+            }
         </tr>
     }
 </table>

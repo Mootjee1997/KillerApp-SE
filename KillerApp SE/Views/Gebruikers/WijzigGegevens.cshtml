@@ -1,18 +1,15 @@
 ﻿@model KillerApp_SE.Models.Gebruiker
 @using KillerApp_SE.Models
 
-@{
-    ViewBag.Title = "WijzigGegevens";
-}
-
-<h2 style="margin-left: 392px;">Wijzig gegevens gebruiker</h2>
+<center><h2>Wijzig mijn gegevens</h2></center>
 
 
 @using (Html.BeginForm())
 {
-    <div style="margin-left: 430px; color:green"><b>@ViewBag.Message</b></div>
+    <center><p><font color="Green">@ViewBag.Message</font></p></center>
+    <center><p><font color="Red">@ViewBag.Warning</font></p></center>
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal" style="margin-left: 280px;">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -39,20 +36,21 @@
                 @Html.ValidationMessageFor(model => model.Geboortedatum, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Wachtwoord, htmlAttributes: new { @class = "control-label col-md-2", @Value = "" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Wachtwoord, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Wachtwoord, "", new { @class = "text-danger" })
+        @if (Model.Gebruikernaam == Session["Gebruikernaam"].ToString())
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.Wachtwoord, htmlAttributes: new { @class = "control-label col-md-2", @Value = "" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Wachtwoord, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                    @Html.ValidationMessageFor(model => model.Wachtwoord, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
+        }
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Opslaan" class="btn btn-default", new { id = gebruiker.Gebruikernaam />
+                <input type="submit" value="Opslaan" class="btn btn-default" , new { id=gebruiker.Gebruikernaam />
             </div>
         </div>
     </div>
 }
-    @Html.ActionLink("Terug naar gebruikersbeheer", "GebruikerBeheren")

@@ -1,7 +1,4 @@
 ﻿@using KillerApp_SE.Models
-@{
-    Bibliotheek bib = new Bibliotheek();
-}
 
 <!DOCTYPE html>
 <html>
@@ -27,13 +24,13 @@
                 {
                     <ul class="nav navbar-nav">
                         <li class="dropdown">
-                            @if (Session["Gebruikernaam"] != null && bib.GetStatus(Session["Gebruikernaam"].ToString()) == "Admin")
+                            @if (Session["Gebruikernaam"] != null && Bibliotheek.GetGebruiker(Session["Gebruikernaam"].ToString()).Status == "Admin")
                             {
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ingelogd als: <font color="Red">@bib.GetNaam(Session["Gebruikernaam"].ToString())</font> <span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ingelogd als: <font color="Red">@Bibliotheek.GetGebruiker(Session["Gebruikernaam"].ToString()).Naam</font> <span class="caret"></span></a>
                             }
                             else
                             {
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ingelogd als: <font color="#01DF01">@bib.GetNaam(Session["Gebruikernaam"].ToString())</font> <span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ingelogd als: <font color="#01DF01">@Bibliotheek.GetGebruiker(Session["Gebruikernaam"].ToString()).Naam</font> <span class="caret"></span></a>
                             }                         
                             <ul class="dropdown-menu" role="menu">
                                 <li>@Html.ActionLink("Mijn gegevens", "WijzigGegevens", "Gebruikers", new { area = "" }, new { @class = "Elements" })</li>
@@ -45,7 +42,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Boeken<span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            @if (Session["Gebruikernaam"] != null && bib.GetStatus(Session["Gebruikernaam"].ToString()) == "Gebruiker")
+                            @if (Session["Gebruikernaam"] != null && Bibliotheek.GetGebruiker(Session["Gebruikernaam"].ToString()).Status == "Gebruiker")
                             {
                                 <li>@Html.ActionLink("Mijn boeken", "MijnBoeken", "Boeken", new { area = "" }, new { @class = "Elements" })</li>
                             }
@@ -55,7 +52,7 @@
                 </ul>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                @if (Session["Gebruikernaam"] != null && bib.GetStatus(Session["Gebruikernaam"].ToString()) == "Admin")
+                @if (Session["Gebruikernaam"] != null && Bibliotheek.GetGebruiker(Session["Gebruikernaam"].ToString()).Status == "Admin")
                 {
                     <ul class="nav navbar-nav">
                         <li class="dropdown">

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using KillerApp_SE.Models;
 
@@ -8,8 +6,7 @@ namespace KillerApp_SE.Controllers
 {
     public class GebruikersController : Controller
     {
-        Bibliotheek bib = new Bibliotheek();
-
+        DateTime result = default(DateTime);
         [HttpGet]
         public ActionResult GebruikerToevoegen()
         {
@@ -26,8 +23,18 @@ namespace KillerApp_SE.Controllers
             {
                 if (!string.IsNullOrEmpty(fc["Gebruikernaam"].ToString()) && !string.IsNullOrEmpty(fc["Wachtwoord"].ToString()) && !string.IsNullOrEmpty(fc["Naam"].ToString()) && !string.IsNullOrEmpty(fc["Adres"].ToString()) && !string.IsNullOrEmpty(fc["Geboortedatum"].ToString()))
                 {
-                    bib.GebruikerToevoegen(fc["Gebruikernaam"], fc["Wachtwoord"], fc["Naam"], fc["Adres"], fc["Geboortedatum"]);
-                    ViewBag.Message = "Gebruiker succesvol aangemaakt!";
+                    if (Bibliotheek.GetGebruiker(fc["Gebruikernaam"]) == null)
+                    {
+                        if (DateTime.TryParse(fc["Geboortedatum"], out result))
+                        {
+                            Gebruiker gebruiker = new Gebruiker(fc["Gebruikernaam"].ToString(), fc["Wachtwoord"].ToString(), fc["Naam"].ToString(), fc["Adres"].ToString(), fc["Geboortedatum"].ToString(), "Gebruiker");
+                            Bibliotheek.GebruikerToevoegen(gebruiker);
+                            ViewBag.Message = "Gebruiker succesvol aangemaakt!";
+                            return View("GebruikerBeheren");
+                        }
+                        else ViewBag.Warning = "Verkeerde input voor geboortedatum! (dd/mm/yyyy).";
+                    }
+                    else ViewBag.Warning = "Gebruikernaam is bezet.";
                 }
                 else ViewBag.Warning = "Voer alle gegevens in aub.";
                 return View();
@@ -39,11 +46,7 @@ namespace KillerApp_SE.Controllers
         {
             if (Session["Gebruikernaam"] != null)
             {
-                ViewData["gebruikers"] = bib.GetGebruikersLijst();
-                if (id == "Error1")
-                {
-                    ViewBag.Warning = "Gebruiker heeft nog boeken! Retourneer de boeken om door te gaan."; 
-                }
+                if (id == "Error1") ViewBag.Warning = "Gebruiker heeft nog boeken! Retourneer de boeken om door te gaan.";
                 return View();
             }
             else return RedirectToAction("Login", "Home");
@@ -53,11 +56,8 @@ namespace KillerApp_SE.Controllers
         {
             if (Session["Gebruikernaam"] != null)
             {
-                if (id != null)
-                {
-                    return View(bib.Zoekgebruiker(id));
-                }
-                else return View(bib.Zoekgebruiker(Session["Gebruikernaam"].ToString()));
+                if (id != null) return View(Bibliotheek.GetGebruiker(id));
+                else return View(Bibliotheek.GetGebruiker(Session["Gebruikernaam"].ToString()));
             }
             else return RedirectToAction("Login", "Home");
         }
@@ -68,15 +68,23 @@ namespace KillerApp_SE.Controllers
             {
                 if (id != null)
                 {
-                    bib.WijzigGegevens(id, fc["Naam"], fc["Adres"], fc["Geboortedatum"], fc["Wachtwoord"]);
-                    ViewBag.Message = "Gegevens zijn succesvol gewijzigd.";
-                    return View(bib.Zoekgebruiker(id));
+                    if (DateTime.TryParse(fc["Geboortedatum"], out result))
+                    {
+                        Bibliotheek.WijzigGegevens(id, fc["Naam"], fc["Adres"], fc["Geboortedatum"], fc["Wachtwoord"]);
+                        ViewBag.Message = "Gegevens zijn succesvol gewijzigd.";
+                    }
+                    else ViewBag.Warning = "Verkeerde input voor geboortedatum! (dd/mm/yyyy).";
+                    return View(Bibliotheek.GetGebruiker(id));
                 }
                 else
                 {
-                    bib.WijzigGegevens(Session["Gebruikernaam"].ToString(), fc["Naam"], fc["Adres"], fc["Geboortedatum"], fc["Wachtwoord"]);
-                    ViewBag.Message = "Uw gegevens zijn succesvol gewijzigd.";
-                    return View(bib.Zoekgebruiker(Session["Gebruikernaam"].ToString()));
+                    if (DateTime.TryParse(fc["Geboortedatum"], out result))
+                    {
+                        Bibliotheek.WijzigGegevens(Session["Gebruikernaam"].ToString(), fc["Naam"], fc["Adres"], fc["Geboortedatum"], fc["Wachtwoord"]);
+                        ViewBag.Message = "Uw gegevens zijn succesvol gewijzigd.";
+                    }
+                    else ViewBag.Warning = "Verkeerde input voor geboortedatum! (dd/mm/yyyy).";
+                    return View(Bibliotheek.GetGebruiker(Session["Gebruikernaam"].ToString()));
                 }
             }
             else return RedirectToAction("Login", "Home");
@@ -86,26 +94,17 @@ namespace KillerApp_SE.Controllers
         {
             if (Session["Gebruikernaam"] != null)
             {
-                if (bib.GetMijnBoeken(id).Count > 0)
+                if (Bibliotheek.GetGebruiker(id).Boeken.Count > 0)
                 {
-                    return RedirectToAction("GebruikerBeheren", "Gebruikers", new { id = "Error1"});
+                    return RedirectToAction("GebruikerBeheren", "Gebruikers", new { id = "Error1" });
                 }
                 else
                 {
-                    bib.VerwijderGebruiker(id);
+                    Bibliotheek.VerwijderGebruiker(id);
                     return RedirectToAction("GebruikerBeheren", "Gebruikers");
                 }
             }
             else return RedirectToAction("Login", "Home");
-        }
-        [HttpGet]
-        public ActionResult RetourBoekenGebruiker(string id)
-        {
-            foreach (Boek b in bib.GetMijnBoeken(id))
-            {
-                bib.RetourBoek(id, b.Titel);
-            }
-            return RedirectToAction("GebruikerBeheren", "Gebruikers");
         }
     }
 }

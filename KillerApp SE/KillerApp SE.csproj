@@ -143,6 +143,7 @@
     <Compile Include="Controllers\GebruikersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\BoekenController.cs" />
+    <Compile Include="DAL\Database.cs" />
     <Compile Include="DAL\Repository\BoekRepository.cs" />
     <Compile Include="DAL\Repository\GebruikerRepository.cs" />
     <Compile Include="DAL\SQL\BoekPersistency.cs" />
@@ -177,7 +178,6 @@
     <Content Include="Views\Gebruikers\WijzigGegevens.cshtml" />
     <Content Include="Views\Boeken\GetBoekenLijst.cshtml" />
     <Content Include="Views\Boeken\MijnBoeken.cshtml" />
-    <Content Include="Views\Boeken\ZoekBoek.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
